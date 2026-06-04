@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- buat sidebar -->
+        <aside class="sidebar">
+            <div class="brand">Catatan Keuangan</div>
+            <nav>
+                <a href="dashboard.html" class="active">Beranda</a>
+                <a href="catatan.html">CatatanTransaksi</a>
+                <a href="aktivitas.html">Aktivitas</a>
+            </nav>
+            <a href="../auth/login.html" class="logout">Logout</a>
+        </aside>
+
+        <main class="main">
+
+            <!-- Judul  -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="page-title">Beranda</div>
+                <div class="page-title">Zaki Nur Faizi</div>
+            </div>
+
+            <!-- card -->
+            <div class="stat-cards">
+                <div class="stat-card card-saldo">
+                    <h4>Total Saldo</h4>
+                    <div class="nominal">Rp:0</div>
+                </div>
+                <div class="stat-card card-masuk">
+                    <h4>Pemasukan</h4>
+                    <div class="nominal">Rp:0</div>
+                </div>
+                <div class="stat-card card-keluar">
+                    <h4>Pengeluaran</h4>
+                    <div class="nominal">Rp:0</div>
+                </div>
+            </div>
+
+
+            <div class="bottom-row">
+
+                <!-- Transaksi -->
+                <div class="transaksi-box">
+                    <h4>Transaksi Terbaru</h4>
+                    <div class="transaksi-item">
+                        <span class="nama">Uang Saku</span>
+                        <span class="nominal-masuk">+Rp 50.000</span>
+                    </div>
+                    <div class="transaksi-item">
+                        <span class="nama">Uang Saku</span>
+                        <span class="nominal-keluar">-Rp 20.000</span>
+                    </div>
+                    <div class="transaksi-item">
+                        <span class="nama">Uang Saku</span>
+                        <span class="nominal-masuk">+Rp 30.000</span>
+                    </div>
+                    <div class="transaksi-item">
+                        <span class="nama">Uang Saku</span>
+                        <span class="nominal-keluar">-Rp 15.000</span>
+                    </div>
+                    <div class="transaksi-item">
+                        <span class="nama">Uang Saku</span>
+                        <span class="nominal-masuk">+Rp 100.000</span>
+                    </div>
+                </div>
+
+                <div class="right-col">
+
+                    <!-- Ringkasan Bulan Ini -->
+                    <div class="bulan-box">
+                        <h4>Bulan Ini</h4>
+                        <div class="periode">Mei 2026</div>
+                        <div class="bulan-row">
+                            <span>Pemasukan</span>
+                            <span class="masuk">Rp:0</span>
+                        </div>
+                        <div class="bulan-row">
+                            <span>Pengeluaran</span>
+                            <span class="keluar">Rp:0</span>
+                        </div>
+                        <div class="bulan-row saldo">
+                            <span>Saldo</span>
+                            <span>Rp:0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- target -->
+                <div class="goals-box">
+                    <h4>Target goals</h4>
+                    <div class="goal-item">mei 2026</div>
+                    <div class="goal-item">mei 2026</div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+
+</html>
