@@ -5,7 +5,7 @@
 }
 
 body {
-    background-image: url("../img/background.jpg");
+    background-color: rgb(196, 198, 196);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -32,7 +32,7 @@ body {
 
 /* ===== CARD LOGIN ===== */
 .card-login {
-    background-color: rgba(8, 155, 89, 0.65);
+    background-color: #059e45;
     border-radius: 30px;
     padding: 30px;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -48,7 +48,7 @@ body {
 
 /* ===== INPUT ===== */
 input {
-    background-color: rgba(9, 64, 103, 0.65);
+    background-color: #094067;
     width: 100%;
     height: 60px;
     border: 4px solid #000000;

@@ -7,6 +7,17 @@
     <title>dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/catatan.css">
+    <style>
+        .table-bg {
+            background-color: #3DA9FC;
+        }
+        th {
+            font-size: 25px;
+        }
+        td {
+            font-size: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,81 +33,63 @@
         </aside>
 
         <main class="main">
-            <div class="page-title">Catatan</div>
-
-            <div class="form-section" id="form-pengeluaran">
-                
-                <div class="tab-wrapper">
-                    <button class="tab-btn active" id="tab-pengeluaran-q" onclick="switchTab('pengeluaran')">
-                        Pengeluaran
-                    </button>
-                    <button class="tab-btn" id="tab-pemasukan-q" onclick="switchTab('pemasukan')">
-                        Pemasukan
-                    </button>
-                </div>
-
-                <form action="" method="post">
-                    <input type="hidden" name="tipe" value="pengeluaran">
-                    
-                    <div class="form-grup">
-                        <label class="text-danger" for="deskripsi">deskripsi</label>
-                        <input type="text" id="deskripsi" name="deskripsi" placeholder="Contoh : Beli Makanan...">
-                    </div>
-                    
-                    <div class="form-grup">
-                        <label class="text-danger" for="jumlah">Jumlah Pengeluaran</label>
-                        <div class="input-prefix">
-                            <span>Rp</span>
-                            <input type="number" id="jumlah" name="jumlah" placeholder="0" min="0">
-                        </div>
-                    </div> 
-                    
-                    <button type="submit" class="btn-simpan">Simpan</button>
-                </form>
+            <div class="row justify-content-end me-2">
+                <a class="page-title" style="text-decoration: none;" href="#">Print</a>
             </div>
-
-            <div class="form-section" id="form-pemasukan" style="display: none;">
-                
-                <div class="tab-wrapper">
-                    <button class="tab-btn" id="tab-pengeluaran-m" onclick="switchTab('pengeluaran')">
-                        Pengeluaran
-                    </button>
-                    <button class="tab-btn active active-masuk" id="tab-pemasukan-m" onclick="switchTab('pemasukan')">
-                        Pemasukan
-                    </button>
+            <div class="container-fluid caption-top m-0 p-0">
+                <div class="table-container">
+                    <caption><h3>Catatan Transaksi</h3></caption>
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead class="table-bg p-2">
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Pemasukan</th>
+                                <th scope="col">Pengeluaran</th>
+                                <th scope="col">Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>07-06-2026</td>
+                                <td>Rp: 50.000</td>
+                                <td>Rp: 25.000</td>
+                                <td>Beli Baso</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>07-06-2026</td>
+                                <td>Rp: 50.000</td>
+                                <td>Rp: 25.000</td>
+                                <td>Beli Baso</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>07-06-2026</td>
+                                <td>Rp: 50.000</td>
+                                <td>Rp: 25.000</td>
+                                <td>Beli Baso</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>07-06-2026</td>
+                                <td>Rp: 50.000</td>
+                                <td>Rp: 25.000</td>
+                                <td>Beli Baso</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>07-06-2026</td>
+                                <td>Rp: 50.000</td>
+                                <td>Rp: 25.000</td>
+                                <td>Beli Baso</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <form action="" method="post">
-                    <input type="hidden" name="tipe" value="pemasukan">
-                    
-                    <div class="form-grup">
-                        <label class="text-success" for="deskripsi_pemasukan">deskripsi</label>
-                        <input type="text" id="deskismatch_pemasukan" name="deskripsi" placeholder="Contoh : Gajihan Masuk...">
-                    </div>
-                    
-                    <div class="form-grup">
-                        <label class="text-success" for="jumlah_pemasukan">Jumlah pemasukan</label>
-                        <div class="input-prefix">
-                            <span>Rp</span>
-                            <input type="number" id="jumlah_pemasukan" name="jumlah" placeholder="0" min="0">
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="btn-simpan btn-masuk">Simpan</button>
-                </form>
             </div>
         </main>
-    </div>
-
-    <script>
-        function switchTab(tipe) {
-            document.querySelectorAll('.form-section').forEach(function (form) {
-                form.style.display = 'none';
-            });
-            
-            document.getElementById('form-' + tipe).style.display = 'block';
-        }
-    </script>
 </body>
 
 </html>

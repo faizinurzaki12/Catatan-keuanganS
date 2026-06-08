@@ -9,7 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-image: url("../img/background.jpg");
+    background-color: rgb(196, 198, 196);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -23,7 +23,7 @@ body {
 
 .sidebar {
     width: 205px;
-    background-color: rgba(200, 230, 230, 0.75);
+    background-color: white;
     display: flex;
     flex-direction: column;
     padding: 16px 0;
@@ -34,7 +34,7 @@ body {
 }
 
 .sidebar .brand {
-    font-size: 14px;
+    font-size: 19px;
     font-weight: bold;
     padding: 0 16px 16px;
     color: #3DA9FC;
@@ -50,11 +50,11 @@ body {
 
 .sidebar nav a {
     display: block;
-    padding: 14px 16px;
-    font-size: 13px;
+    padding: 10px 8px;
+    font-size: 22px;
     color: #333;
     text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background 0.2s;
 }
 
@@ -66,9 +66,9 @@ body {
 }
 
 .sidebar .logout {
-    margin-top: auto; 
+    margin-top: auto;
     padding: 14px 16px;
-    font-size: 13px;
+    font-size: 22px;
     color: #e05;
     font-weight: bold;
     cursor: pointer;
@@ -93,10 +93,10 @@ body {
     backdrop-filter: blur(5px);
     font-size: 15px;
     font-weight: bold;
-    color: #3DA9FC;
+    color: #0d578f;
     padding: 8px 14px;
     border-radius: 8px;
-    width: fit-content;
+    /* width: fit-content; */
 }
 
 
@@ -126,7 +126,7 @@ body {
 }
 
 .stat-card .nominal {
-    font-size: 22px;
+    font-size: 23px;
     font-weight: bold;
 }
 
@@ -144,29 +144,41 @@ body {
 
 .bottom-row {
     display: flex;
+    flex: 1;
     gap: 16px;
     align-items: flex-start;
 }
 
 .transaksi-box {
     flex: 2;
-    background-color: rgba(200, 230, 230, 0.70);
+    background-color: white;
+    height: 100%;
     backdrop-filter: blur(8px);
     border-radius: 16px;
     padding: 16px;
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.transaksi-box h4 {
+.transaksi-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.transaksi-box h3 {
     font-size: 13px;
     font-weight: bold;
+    margin-bottom: 12px;
 }
 
 .transaksi-item {
     display: flex;
     justify-content: space-between;
     padding: 8px 0;
-    font-size: 12px;
+    font-size: 13px;
     color: #333;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -177,30 +189,48 @@ body {
 
 .transaksi-item .nama {
     flex: 1;
+    font-size: 24px;
 }
 
 .transaksi-item .nominal-masuk {
     color: #089B59;
     font-weight: bold;
+    font-size: 24px;
 }
 
 .transaksi-item .nominal-keluar {
     color: #dc5050;
     font-weight: bold;
+    font-size: 20px;
 }
 
-.right-col,
-.goals-box {
-    background-color: rgba(200, 230, 230, 0.70);
-    backdrop-filter: blur(5px);
+.right-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: transparent !important;
+    /* backdrop-filter: blur(5px); */
     border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.3);
     padding: 16px;
 }
 
-.bulan-box h4,
-.goals-box h4 {
-    font-size: 14px;
+.bulan-box,
+.goals-box {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Border tipis biar manis */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    /* Bayangan halus */
+    width: 100%;
+}
+
+
+
+.bulan-box h3,
+.goals-box h3 {
     font-weight: bold;
     color: #094067;
     margin-bottom: 4px;
@@ -208,7 +238,7 @@ body {
 
 .bulan-box .periode,
 .goals-box .periode {
-    font-size: 11px;
+    font-size: 22px;
     color: #555;
     margin-bottom: 12px;
 }
@@ -216,14 +246,14 @@ body {
 .bulan-row {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 17px;
     color: #333;
     padding: 4px 0;
 }
 
 .bulan-row .saldo {
     font-weight: bold;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-top: 6px;
     padding-top: 8px;
 }
@@ -231,15 +261,16 @@ body {
 .bulan-row .masuk {
     color: #089B59;
 }
+
 .bulan-row .keluar {
     color: #dc5050;
 }
 
 .goal-item {
-    font-size: 12px;
+    font-size: 17px;
     color: #333;
     padding: 4px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .goal-item:last-child {
