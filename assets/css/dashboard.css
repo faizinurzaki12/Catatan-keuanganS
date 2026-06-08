@@ -276,3 +276,73 @@ body {
 .goal-item:last-child {
     border-bottom: none;
 }
+
+/* buat responsif */
+@media (max-width: 992px){
+    .bottom-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    .transaksi-box {
+        flex: 1.5;
+    }
+
+    .right-col {
+        flex: 1;
+    }
+}
+
+/* reponsive layar hp atau landsacpe */
+@media (max-width: 768px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+    }
+
+    .sidebar nav {
+        flex-direction: row;
+        margin-top: 0;
+    }
+
+    .sidebar nav a {
+        font-size: 14px;
+        padding: 6px 10px;
+        border-bottom: none;
+    }
+
+    .sidebar .logout {
+        margin-top: 0;
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    .stat-card {
+        flex-direction: column;
+    }
+}
+
+@media(max-height: 500px) and (orientation: landscape) {
+    body {
+        height: auto;
+    }
+
+    .wrapper {
+        overflow: visible;
+    }
+
+    .main {
+        padding: 12px;
+    }
+
+}
