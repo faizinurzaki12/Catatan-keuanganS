@@ -235,8 +235,22 @@ td {
 }
 
 @media (max-width: 768px) {
+
+    body {
+        height: auto !important;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
     .wrapper {
+        height: auto !important;
         flex-direction: column;
+        overflow-x: visible !important;
+    }
+    
+    .main {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 12px;
     }
 
     .sidebar {
@@ -268,7 +282,9 @@ td {
     }
 
     .table-container {
+        width: 100% !important;
         padding: 12px;
+        overflow: hidden;
     }
 
     .main .row {

@@ -296,9 +296,21 @@ body {
 
 /* reponsive layar hp atau landsacpe */
 @media (max-width: 768px) {
+    body {
+        height: auto !important;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
     .wrapper {
-        display: flex;
+        height: auto !important;
         flex-direction: column;
+        overflow: visible !important;
+    }
+
+    .main {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 12px;
     }
 
     .sidebar {
@@ -329,6 +341,17 @@ body {
 
     .stat-card {
         flex-direction: column;
+    }
+
+    .bottom-row {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 16px;
+    }
+    .transaksi-box,
+    .right-col {
+        width: 100% !important;
+        flex: none;
     }
 }
 
