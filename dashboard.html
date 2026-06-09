@@ -11,15 +11,41 @@
 
 <body>
     <div class="wrapper">
+        <!-- navbar humberger  -->
+        <nav class="navbar navbar-expand-md navbar-light bg-light d-block d-md-none px-3 shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand brand" href="#">Catatan Keuangan</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse p-2" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="catatan.html">Catatan Transaksi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <!-- buat sidebar -->
-        <aside class="sidebar">
-            <div class="brand">Catatan Keuangan</div>
+        <aside class="sidebar d-none d-md-flex">
             <nav>
                 <a href="dashboard.html" class="active">Beranda</a>
                 <a href="catatan.html">CatatanTransaksi</a>
                 <a href="aktivitas.html">Aktivitas</a>
             </nav>
-            <a href="index.html" class="logout">Logout</a>
+            <a href="index.html" class="logout me-auto">Logout</a>
+
         </aside>
 
         <main class="main">
@@ -104,6 +130,11 @@
 
         </main>
     </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

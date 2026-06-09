@@ -238,13 +238,13 @@ td {
 
     body {
         height: auto !important;
-        /* min-height: 100vh; */
+        min-height: 100vh;
         overflow-x: hidden;
     }
     .wrapper {
         height: auto !important;
         flex-direction: column;
-        /* overflow-x: visible !important; */
+        overflow-x: visible !important;
     }
     
     .main {
