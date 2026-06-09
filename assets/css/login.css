@@ -71,7 +71,7 @@ input::placeholder {
 }
 
 /* ===== BUTTON ===== */
-button {
+.btn {
     background-color: #094067;
     width: 100%;
     color: white;
