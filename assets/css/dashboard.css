@@ -300,6 +300,7 @@ body {
         height: auto !important;
         min-height: 100vh;
         overflow-x: hidden;
+        /* overflow-x: hidden; */
     }
     .wrapper {
         height: auto !important;
@@ -308,8 +309,9 @@ body {
     }
 
     .main {
+        width: 100%;
         height: auto !important;
-        overflow: visible !important;
+        /* overflow: visible !important; */
         padding: 12px;
     }
 
@@ -340,9 +342,15 @@ body {
     }
 
     .stat-card {
-        flex-direction: column;
+        width: 100% !important;
+        min-height: 100px;
     }
 
+    .stat-cards {
+        width: 100%;
+        flex-direction: column;
+        gap: 12px;
+    }
     .bottom-row {
         flex-direction: column !important;
         width: 100%;
