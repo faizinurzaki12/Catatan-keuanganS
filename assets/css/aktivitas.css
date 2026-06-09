@@ -237,9 +237,9 @@ body {
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    height: 100%; 
+    height: 100%;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     overflow: hidden
 }
 
@@ -309,6 +309,23 @@ body {
 .keluar {
     color: #dc5050;
     font-weight: bold;
+}
+
+.btn-keluar {
+    width: 100%;
+    padding: 14px;
+    background: #c70404;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-keluar:hover {
+    background: #a40101;
 }
 
 @media (max-width: 768px) {
