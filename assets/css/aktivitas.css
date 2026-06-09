@@ -66,7 +66,7 @@ body {
 }
 
 .sidebar .logout {
-    margin-top: auto; 
+    margin-top: auto;
     padding: 14px 16px;
     font-size: 13px;
     color: #e05;
@@ -142,7 +142,7 @@ body {
 
 .form-section {
     width: 100%;
-    max-width: 360px; 
+    max-width: 360px;
     background-color: rgba(255, 255, 255, 0.75);
     border-radius: 16px;
     padding: 20px;
@@ -223,8 +223,8 @@ body {
 
 .card-aktivitas {
     flex: 1;
-    min-width: 280px; 
-    background-color:   rgba(200, 230, 230, 0.70); 
+    min-width: 280px;
+    background-color: rgba(200, 230, 230, 0.70);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-radius: 16px;
@@ -236,7 +236,7 @@ body {
 }
 
 .card-header-title {
-    background-color: white; 
+    background-color: white;
     color: #094067;
     font-weight: bold;
     font-size: 16px;
@@ -256,7 +256,7 @@ body {
 }
 
 .aktivitas-item {
-    background-color: white; 
+    background-color: white;
     border-radius: 12px;
     padding: 15px 18px;
     display: flex;
@@ -291,4 +291,38 @@ body {
 .keluar {
     color: #dc5050;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    body {
+        height: auto !important;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    .main {
+        width: 100%;
+        height: auto !important;
+        padding: 10px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+    }
+
+    .sidebar .brand {
+        padding: 5px 10px;
+        align-items: center;
+        font-size: 18px;
+    }
+
+    .sidebar nav {
+        flex-direction: row;
+        margin-top: 0;
+    }
 }

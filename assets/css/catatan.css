@@ -103,9 +103,11 @@ body {
 .table-bg {
   background-color: #3da9fc;
 }
+
 th {
   font-size: 25px;
 }
+
 td {
   font-size: 20px;
 }
@@ -236,65 +238,70 @@ td {
 
 @media (max-width: 768px) {
 
-    body {
-        height: auto !important;
-        min-height: 100vh;
-        overflow-x: hidden;
-    }
-    .wrapper {
-        height: auto !important;
-        flex-direction: column;
-        overflow-x: visible !important;
-    }
-    
-    .main {
-        height: auto !important;
-        overflow: visible !important;
-        padding: 10px;
-    }
+  body {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    .sidebar {
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 16px;
-    }
-    .sidebar .brand {
-      padding: 5px 10px;
-      align-items: center;
-      font-size: 18px;
-    }
-    .sidebar nav {
-        flex-direction: row;
-        margin-top: 0;
-    }
-    .sidebar nav a {
-        font-size: 17px;
-        padding: 6px 10px;
-        border-bottom: none;
-    }
-    .sidebar .logout {
-        margin-top: 0;
-        font-size: 14px;
-        padding: 6px 10px;
-    }
+  .wrapper {
+    height: auto !important;
+    flex-direction: column;
+    overflow: visible !important;
+  }
 
-    th {
-        font-size: 19px !important;
-        padding: 8px !important;
-    }
+  .main {
+    width: 100%;
+    height: auto !important;
+    padding: 12px;
+  }
 
-    .table-container {
-        width: 100% !important;
-        padding: 12px;
-        overflow: hidden;
-    }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+  }
 
-    .main .row {
-        display: flex !important;
-        justify-content: end !important;
-        margin-bottom: 10px;
-    }
+  .sidebar .brand {
+    padding: 5px 10px;
+    align-items: center;
+    font-size: 18px;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    margin-top: 0;
+  }
+
+  .sidebar nav a {
+    font-size: 17px;
+    padding: 6px 10px;
+    border-bottom: none;
+  }
+
+  .sidebar .logout {
+    margin-top: 0;
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  th {
+    font-size: 19px !important;
+    padding: 8px !important;
+  }
+
+  .table-container {
+    width: 100% !important;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .main .row {
+    display: flex !important;
+    justify-content: end !important;
+    margin-bottom: 10px;
+  }
 }
