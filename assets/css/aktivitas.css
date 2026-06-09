@@ -138,12 +138,12 @@ body {
 
 .main {
     display: flex;
+    overflow: hidden;
     flex-direction: column;
     gap: 16px;
     flex: 1;
     width: 100%;
     padding: 20px;
-    overflow-y: auto;
 }
 
 .form-section {
@@ -237,15 +237,17 @@ body {
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    overflow-y: auto;
-    height: 100%;
+    height: 100%; 
+    display: flex;
+    flex-direction: column; 
+    overflow: hidden
 }
 
 .card-header-title {
     background-color: white;
     color: #094067;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
     text-align: center;
     padding: 17px 18px;
     border-radius: 12px;
@@ -257,7 +259,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 400px;
+    flex: 1;
+    max-height: none;
     overflow-y: auto;
 }
 
@@ -266,8 +269,8 @@ body {
     flex-direction: row;
     gap: 16px;
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 8px;
+    flex: 1;
+    overflow: hidden;
 }
 
 .aktivitas-item {
@@ -310,27 +313,45 @@ body {
 
 @media (max-width: 768px) {
     body {
-        height: auto !important;
-        min-height: 100vh;
-        overflow-x: hidden;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
 
     .wrapper {
-        height: auto !important;
+        display: flex;
         flex-direction: column;
-        overflow: visible !important;
+        flex: 1;
+        height: calc(100vh - 56px) !important;
+        overflow: hidden !important;
     }
 
     .main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
         width: 100%;
-        height: auto !important;
+        height: 100% !important;
         padding: 12px;
         gap: 12px;
-        overflow-x: hidden;
+        overflow: hidden !important;
     }
 
     .sidebar {
         display: none !important;
+    }
+
+    .card-header-title {
+        background-color: white;
+        color: #094067;
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+        padding: 17px 18px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .sidebar nav a {
@@ -347,16 +368,22 @@ body {
         padding: 4px 4px 16px 4px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
+        width: 100%;
+        width: 100%;
+        flex: 1;
+        height: 100% !important;
     }
 
     .card-aktivitas {
-        flex: 0 0 75% !important;
+        flex: 0 0 78% !important;
         min-width: 78% !important;
         scroll-snap-align: center;
-        height: auto !important;
-        max-height: 340px;
+
+        height: 100% !important;
+        max-height: none !important;
         padding: 14px !important;
-        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
     }
 
     .item-left .item-title {
@@ -369,5 +396,11 @@ body {
 
     .item-left .item-price {
         font-size: 18px;
+    }
+
+    .list-wrapper {
+        flex: 1;
+        overflow-y: auto !important;
+        max-height: none !important;
     }
 }

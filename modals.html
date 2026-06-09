@@ -25,7 +25,7 @@
             <div class="page-title">Catatan</div>
 
             <div class="form-section" id="form-pengeluaran">
-                
+
                 <div class="tab-wrapper">
                     <button class="tab-btn active" id="tab-pengeluaran-q" onclick="switchTab('pengeluaran')">
                         Pengeluaran
@@ -37,26 +37,26 @@
 
                 <form action="" method="post">
                     <input type="hidden" name="tipe" value="pengeluaran">
-                    
+
                     <div class="form-grup">
                         <label class="text-danger" for="deskripsi">deskripsi</label>
                         <input type="text" id="deskripsi" name="deskripsi" placeholder="Contoh : Beli Makanan...">
                     </div>
-                    
+
                     <div class="form-grup">
                         <label class="text-danger" for="jumlah">Jumlah Pengeluaran</label>
                         <div class="input-prefix">
                             <span>Rp</span>
                             <input type="number" id="jumlah" name="jumlah" placeholder="0" min="0">
                         </div>
-                    </div> 
-                    
+                    </div>
+
                     <button type="submit" class="btn-simpan">Simpan</button>
                 </form>
             </div>
 
             <div class="form-section" id="form-pemasukan" style="display: none;">
-                
+
                 <div class="tab-wrapper">
                     <button class="tab-btn" id="tab-pengeluaran-m" onclick="switchTab('pengeluaran')">
                         Pengeluaran
@@ -68,12 +68,13 @@
 
                 <form action="" method="post">
                     <input type="hidden" name="tipe" value="pemasukan">
-                    
+
                     <div class="form-grup">
                         <label class="text-success" for="deskripsi_pemasukan">deskripsi</label>
-                        <input type="text" id="deskismatch_pemasukan" name="deskripsi" placeholder="Contoh : Gajihan Masuk...">
+                        <input type="text" id="deskismatch_pemasukan" name="deskripsi"
+                            placeholder="Contoh : Gajihan Masuk...">
                     </div>
-                    
+
                     <div class="form-grup">
                         <label class="text-success" for="jumlah_pemasukan">Jumlah pemasukan</label>
                         <div class="input-prefix">
@@ -81,19 +82,44 @@
                             <input type="number" id="jumlah_pemasukan" name="jumlah" placeholder="0" min="0">
                         </div>
                     </div>
-                    
+
                     <button type="submit" class="btn-simpan btn-masuk">Simpan</button>
                 </form>
             </div>
         </main>
     </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         function switchTab(tipe) {
             document.querySelectorAll('.form-section').forEach(function (form) {
                 form.style.display = 'none';
             });
-            
+
             document.getElementById('form-' + tipe).style.display = 'block';
         }
     </script>
