@@ -253,6 +253,56 @@ body {
     font-size: 20px;
 }
 
+/* Wadah utama untuk membuat semuanya di tengah */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    /* Menyusun lingkaran dan teks ke bawah */
+    align-items: center;
+    /* Meratakan ke tengah secara horizontal */
+    justify-content: center;
+    /* Meratakan ke tengah secara vertikal */
+    padding: 24px 0;
+    /* Sama dengan py-3 (1.5rem / 24px) */
+    width: 100%;
+}
+
+/* Animasi lingkaran memuat */
+.loader {
+    border: 6px solid #f3f3f3;
+    /* Garis abu-abu latar belakang */
+    border-top: 6px solid #059e45;
+    /* Diubah ke HIJAU sesuai tema transaksi Anda */
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+    /* Jarak antara lingkaran dan teks */
+}
+
+/* Pengaturan gaya teks */
+.loader-text {
+    font-size: 19px;
+    color: #059e45;
+    /* Warna hijau transaksi */
+    font-family: sans-serif;
+    /* Sesuaikan dengan font web Anda */
+    text-align: center;
+}
+
+/* Efek berputar */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
 @media (max-width: 768px) {
     .wrapper {
         flex-direction: column;

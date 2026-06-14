@@ -11,7 +11,6 @@
 
 <body>
     <div class="wrapper">
-        <!-- navbar humberger  -->
         <nav class="navbar navbar-expand-md navbar-light bg-light d-block d-md-none px-3 shadow-sm">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Catatan Keuangan</a>
@@ -19,105 +18,68 @@
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse " id="navbarNav">
+                <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="dashboard.html">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="catatan.html">Catatan Transaksi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="aktivitas.html">Aktivitas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="index.html" style="text-decoration: none; color: red;">Logout</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="catatan.html">Catatan Transaksi</a></li>
+                        <li class="nav-item"><a class="nav-link" href="aktivitas.html">Aktivitas</a></li>
+                        <li class="nav-item"><a href="#" id="logoutM"
+                                style="text-decoration: none; color: red;">Logout</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- buat sidebar -->
         <aside class="sidebar d-none d-md-flex">
             <div class="brand">Catatan Keuangan</div>
             <nav>
                 <a href="dashboard.html" class="active">Beranda</a>
                 <a href="catatan.html">Catatan Transaksi</a>
                 <a href="aktivitas.html">Aktivitas</a>
-                <a href="index.html" class="logout">Logout</a>
+                <a href="#" id="logoutD" class="logout">Logout</a>
             </nav>
-
         </aside>
 
         <main class="main">
-
-            <!-- Judul  -->
             <div class="d-flex page-title justify-content-between align-items-center mb-3">
                 <div>Beranda</div>
-                <div>Zaki Nur Faizi</div>
+                <div id="namaUserAktif">Loading...</div>
             </div>
 
-            <!-- card -->
+            <div id="alertLoginSukses" class="alert alert-success alert-dismissible fade show d-none" role="alert"
+                style="border-radius: 10px; margin-bottom: 20px;">
+                <strong>Berhasil!</strong> Selamat datang kembali di Catatan Keuangan.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
             <div class="stat-cards">
                 <div class="stat-card card-saldo">
                     <h2>Total Saldo</h2>
-                    <div class="nominal">Rp:0</div>
+                    <div class="nominal" id="totalSaldo">Rp 0</div>
                 </div>
                 <div class="stat-card card-masuk">
                     <h2>Pemasukan</h2>
-                    <div class="nominal">Rp:0</div>
+                    <div class="nominal" id="totalMasuk">Rp 0</div>
                 </div>
                 <div class="stat-card card-keluar">
                     <h2>Pengeluaran</h2>
-                    <div class="nominal">Rp:0</div>
+                    <div class="nominal" id="totalKeluar">Rp 0</div>
                 </div>
             </div>
 
-
             <div class="bottom-row">
-
-                <!-- Transaksi -->
                 <div class="transaksi-box">
                     <h3>Transaksi Terbaru</h3>
-                    <div class="transaksi-item">
-                        <span class="nama">Uang Saku</span>
-                        <span class="nominal-masuk">+Rp 50.000</span>
-                    </div>
-                    <div class="transaksi-item">
-                        <span class="nama">Uang Saku</span>
-                        <span class="nominal-keluar">-Rp 20.000</span>
-                    </div>
-                    <div class="transaksi-item">
-                        <span class="nama">Uang Saku</span>
-                        <span class="nominal-masuk">+Rp 30.000</span>
-                    </div>
-                    <div class="transaksi-item">
-                        <span class="nama">Uang Saku</span>
-                        <span class="nominal-keluar">-Rp 15.000</span>
-                    </div>
-                    <div class="transaksi-item">
-                        <span class="nama">Uang Saku</span>
-                        <span class="nominal-masuk">+Rp 100.000</span>
-                    </div>
+                    <div id="containerTransaksi"></div>
                 </div>
-
                 <div class="right-col">
-
                     <div class="bulan-box">
                         <h3>Bulan Ini</h3>
-                        <div class="periode">Mei 2026</div>
-                        <div class="bulan-row">
-                            <span class="pemasukan">Pemasukan</span>
-                            <span class="masuk">Rp:0</span>
+                        <div class="periode" id="periodeBulanIni"></div>
+                        <div class="bulan-row"><span>Pemasukan</span><span class="masuk" id="bulanMasuk">Rp 0</span>
                         </div>
-                        <div class="bulan-row">
-                            <span class="pengeluaran">Pengeluaran</span>
-                            <span class="keluar">Rp:0</span>
+                        <div class="bulan-row"><span>Pengeluaran</span><span class="keluar" id="bulanKeluar">Rp 0</span>
                         </div>
-                        <div class="bulan-row saldo">
-                            <span>Saldo</span>
-                            <span>Rp:0</span>
-                        </div>
+                        <div class="bulan-row saldo"><span>Saldo</span><span id="bulanSaldo">Rp 0</span></div>
                     </div>
 
                     <div class="goals-box">
@@ -125,17 +87,95 @@
                         <div class="goal-item">mei 2026</div>
                         <div class="goal-item">mei 2026</div>
                     </div>
-
                 </div>
             </div>
-
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-init.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <script>
+        // 1. SATPAM HALAMAN
+        const sessionData = localStorage.getItem('user_session');
+        if (!sessionData) {
+            window.location.href = "index.html";
+        }
+        const userAktif = JSON.parse(sessionData);
+
+        async function hitungDataDashboard() {
+            // --- A. LOGIKA ALERT (FLASH MESSAGE) ---
+            const alertElement = document.getElementById('alertLoginSukses');
+            if (sessionStorage.getItem('tampilkan_alert') === 'true') {
+                if (alertElement) {
+                    alertElement.classList.remove('d-none');
+                    alertElement.style.setProperty('display', 'block', 'important');
+                    sessionStorage.removeItem('tampilkan_alert');
+
+                    setTimeout(() => {
+                        alertElement.style.display = 'none';
+                    }, 3000);
+                }
+            }
+
+            // --- B. AMBIL NAMA USER ---
+            if (userAktif && userAktif.email) {
+                const { data: userData } = await supabaseClient
+                    .from('users')
+                    .select('name')
+                    .eq('email', userAktif.email)
+                    .maybeSingle();
+
+                document.getElementById('namaUserAktif').innerText = (userData && userData.name)
+                    ? userData.name
+                    : userAktif.email.split('@')[0];
+            }
+
+            // --- C. AMBIL DATA TRANSAKSI ---
+            const { data: listTransaksi } = await supabaseClient
+                .from('transaksi')
+                .select('*')
+                .eq('user_id', 1);
+
+            let m = 0, k = 0, html = "";
+            const fmt = (n) => "Rp " + new Intl.NumberFormat('id-ID').format(n);
+
+            if (listTransaksi && listTransaksi.length > 0) {
+                listTransaksi.forEach(i => {
+                    if (i.tipe === 'pemasukan') m += i.jumlah;
+                    else k += i.jumlah;
+                });
+
+                listTransaksi.sort((a, b) => b.id - a.id).slice(0, 5).forEach(i => {
+                    const isMasuk = i.tipe === 'pemasukan';
+                    html += `<div class="transaksi-item">
+                            <span>${i.deskripsi}</span>
+                            <span class="${isMasuk ? 'nominal-masuk' : 'nominal-keluar'}">${isMasuk ? '+' : '-'}${fmt(i.jumlah)}</span>
+                         </div>`;
+                });
+            } else {
+                html = `<div class="text-center text-muted py-3">Belum ada transaksi.</div>`;
+            }
+
+            // --- D. UPDATE UI ---
+            document.getElementById('totalSaldo').innerText = document.getElementById('bulanSaldo').innerText = fmt(m - k);
+            document.getElementById('totalMasuk').innerText = document.getElementById('bulanMasuk').innerText = fmt(m);
+            document.getElementById('totalKeluar').innerText = document.getElementById('bulanKeluar').innerText = fmt(k);
+            document.getElementById('containerTransaksi').innerHTML = html;
+            document.getElementById('periodeBulanIni').innerText = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        }
+
+        // --- E. LOGOUT ---
+        document.getElementById('logoutD').onclick = document.getElementById('logoutM').onclick = (e) => {
+            e.preventDefault();
+            localStorage.removeItem('user_session');
+            window.location.href = "index.html";
+        };
+
+        // Jalankan fungsi saat halaman dimuat
+        hitungDataDashboard();
+    </script>
 </body>
 
 </html>

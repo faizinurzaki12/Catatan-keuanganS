@@ -1,8 +1,4 @@
-// assets/js/supabase-init.js
+const SUPABASE_URL = "https://dpyxfokyihreduzgpwyv.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_612mPRnCOqMGEx-74vRBig_ULYumvMU"; // Gunakan token lengkapmu
 
-// 1. Konfigurasi API Supabase Anda
-const SUPABASE_URL = "https://dpyxvokyihreduzgpwyv.supabase.co";
-const SUPABASE_ANON_KEY = "https://dpyxfokyihreduzgpwyv.supabase.co/rest/v1/";
-
-// 2. Inisialisasi client Supabase secara global
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
