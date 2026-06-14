@@ -23,11 +23,11 @@
                     </div>
 
                     <div class="card-login">
-                        <form action="" method="post">
+                        <form action="" id="login" method="post">
                             <h3>Login</h3>
-                            <input type="email" name="email" placeholder="Masukan Email">
-                            <input type="password" name="password" placeholder="Masukan Password">
-                            <a href="dashboard.html" class="btn" style="text-decoration: none;">Login</a>
+                            <input type="email" id="email" name="email" placeholder="Masukan Email">
+                            <input type="password" id="password" name="password" placeholder="Masukan Password">
+                            <button type="submit" class="btn">Login</button>
                         </form>
                     </div>
 
@@ -37,6 +37,30 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-init.js"></script>
+    <script>
+        document.getElementById('formLogin').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Mencegah reload halaman secara default
+
+            const emailInput = document.getElementById('email').value;
+            const passwordInput = document.getElementById('password').value;
+
+            // Tembak API Supabase Auth
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: emailInput,
+                password: passwordInput,
+            });
+
+            if (error) {
+                alert("Login Gagal: " + error.message);
+            } else {
+                alert("Login Berhasil! Selamat Datang.");
+                // Arahkan ke dashboard setelah berhasil login
+                window.location.href = "dashboard.html";
+            }
+        });
+    </script>
 </body>
 
 </html>
