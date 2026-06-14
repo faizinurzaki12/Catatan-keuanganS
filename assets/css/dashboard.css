@@ -33,7 +33,7 @@ body {
     -webkit-backdrop-filter: blur(8px);
 }
 
-.sidebar .brand {
+.brand {
     font-size: 19px;
     font-weight: bold;
     padding: 0 16px 16px;
@@ -45,18 +45,31 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    text-align: center;
     margin-top: 10px;
 }
 
 
 .sidebar nav a {
     display: block;
-    padding: 10px 8px;
-    font-size: 18px;
+    padding: 5px 6px;
+    font-size: 17px;
     color: #333;
     text-decoration: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background 0.2s;
+}
+
+.sidebar nav a.logout {
+    font-size: 17px;
+    color: #e05;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.sidebar nav a.logout:hover {
+    background-color: rgba(255, 0, 80, 0.1);
 }
 
 .sidebar nav a:hover,
@@ -66,19 +79,6 @@ body {
     font-weight: bold;
 }
 
-.sidebar .logout {
-    margin-top: auto;
-    padding: 14px 16px;
-    font-size: 22px;
-    color: #e05;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.sidebar .logout:hover {
-    background-color: rgba(255, 0, 80, 0.1);
-}
 
 .main {
     flex: 1;
@@ -120,8 +120,8 @@ body {
     justify-content: center;
 }
 
-.stat-card h4 {
-    font-size: 14px;
+.stat-card h2 {
+    font-size: 18px;
     margin-bottom: 10px;
     opacity: 0.9;
 }
@@ -147,13 +147,13 @@ body {
     display: flex;
     flex: 1;
     gap: 16px;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 .transaksi-box {
-    flex: 2;
+    flex: 1;
     background-color: white;
-    height: 100%;
+    min-height: 120px;
     backdrop-filter: blur(8px);
     border-radius: 16px;
     padding: 16px;
@@ -164,7 +164,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 200px;
+    max-height: 120px;
     overflow-y: auto;
     padding-right: 4px;
 }
@@ -179,7 +179,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 8px 0;
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -190,13 +190,13 @@ body {
 
 .transaksi-item .nama {
     flex: 1;
-    font-size: 18px;
+    font-size: 19px;
 }
 
 .transaksi-item .nominal-masuk {
     color: #089B59;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .transaksi-item .nominal-keluar {
@@ -213,7 +213,7 @@ body {
     background: transparent !important;
     /* backdrop-filter: blur(5px); */
     border-radius: 16px;
-    padding: 16px;
+    padding: 0px;
 }
 
 .bulan-box,
@@ -232,6 +232,7 @@ body {
 
 .bulan-box h3,
 .goals-box h3 {
+    font-size: 23px;
     font-weight: bold;
     color: #094067;
     margin-bottom: 4px;
@@ -252,7 +253,7 @@ body {
     padding: 4px 0;
 }
 
-.bulan-row .saldo {
+.bulan-row.saldo {
     font-weight: bold;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-top: 6px;

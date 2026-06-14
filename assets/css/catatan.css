@@ -8,7 +8,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: rgb(196, 198, 196); 
+  background-color: rgb(196, 198, 196);
 }
 
 .wrapper {
@@ -57,8 +57,9 @@ body {
 
 .sidebar nav a {
   display: block;
-  padding: 10px 8px;
-  font-size: 18px;
+  padding: 5px 6px;
+  font-size: 17px;
+  text-align: center;
   color: #333;
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -72,17 +73,15 @@ body {
   font-weight: bold;
 }
 
-.sidebar .logout {
-  margin-top: auto;
-  padding: 14px 16px;
-  font-size: 22px;
+.sidebar nav a.logout {
+  font-size: 17px;
   color: #e05;
   font-weight: bold;
   cursor: pointer;
   text-decoration: none;
 }
 
-.sidebar .logout:hover {
+.sidebar nav a.logout:hover {
   background-color: rgba(255, 0, 80, 0.1);
 }
 
