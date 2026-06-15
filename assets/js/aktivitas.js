@@ -50,7 +50,10 @@ async function muatData() {
     });
     listAktivitas.innerHTML = html;
   } else {
-    listAktivitas.innerHTML = `<div class="p-3 text-center">Belum ada transaksi.</div>`;
+    listAktivitas.innerHTML = `
+        <div class="aktivitas-item">
+            <div class="item-title">Belum ada transaksi.</div>
+        </div>`;
   }
 }
 
