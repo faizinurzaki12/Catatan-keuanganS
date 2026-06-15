@@ -1,129 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catatan Transaksi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/catatan.css" />
+  </head>
+  <body>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/catatan.css">
-</head>
-
-<body>
     <div class="wrapper">
-        <!-- navbar humberger  -->
-        <nav class="navbar navbar-expand-md navbar-light bg-light d-block d-md-none px-3 shadow-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Catatan Keuangan</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="dashboard.html">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="catatan.html">Catatan Transaksi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="aktivitas.html">Aktivitas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="index.html" style="text-decoration: none; color: red;">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+      <nav class="navbar navbar-expand-md navbar-light bg-light d-block d-md-none px-3 shadow-sm">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Catatan Keuangan</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link active" href="catatan.html">Catatan Transaksi</a></li>
+              <li class="nav-item"><a class="nav-link" href="aktivitas.html">Aktivitas</a></li>
+              <li class="nav-item"><a href="#" id="logoutM" style="text-decoration: none; color: red">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <aside class="sidebar d-none d-md-flex">
+        <div class="brand">Catatan Keuangan</div>
+        <nav>
+          <a href="dashboard.html">Beranda</a>
+          <a href="catatan.html" class="active">Catatan Transaksi</a>
+          <a href="aktivitas.html">Aktivitas</a>
+          <a href="#" id="logoutD" class="logout">Logout</a>
         </nav>
-        <!-- buat sidebar -->
-        <aside class="sidebar d-none d-md-flex">
-            <div class="brand">Catatan Keuangan</div>
-            <nav>
-                <a href="dashboard.html">Beranda</a>
-                <a href="catatan.html" class="active">Catatan Transaksi</a>
-                <a href="aktivitas.html">Aktivitas</a>
-                <a href="index.html" class="logout">Logout</a>
-            </nav>
-        </aside>
+      </aside>
 
-        <main class="main">
-            <div class="row justify-content-end me-2">
-                <a class="page-title" style="text-decoration: none;" href="#">Print</a>
+      <main class="main">
+        <div class="row justify-content-end me-2 mb-3">
+          <a class="page-title" style="text-decoration: none; cursor: pointer" onclick="window.print()">Print</a>
+        </div>
+
+        <div class="container-fluid m-0 p-0">
+          <div class="table-container">
+            <h3>Catatan Transaksi</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover table-striped">
+                <thead class="table-bg p-2">
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Pemasukan</th>
+                    <th scope="col">Pengeluaran</th>
+                    <th scope="col">Keterangan</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">
+                  <tr>
+                    <td colspan="5" class="text-center py-5">
+                      <div class="custom-spinner" style="margin: 0 auto"></div>
+                      <div class="loading-text" style="margin-top: 10px">Memuat data...</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="container-fluid caption-top m-0 p-0">
-                <div class="table-container">
-                    <caption>
-                        <h3>Catatan Transaksi</h3>
-                    </caption>
-                    <div class="table-responsive"
-                        style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead class="table-bg p-2">
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Tanggal</th>
-                                    <th scope="col">Pemasukan</th>
-                                    <th scope="col">Pengeluaran</th>
-                                    <th scope="col">Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>07-06-2026</td>
-                                    <td>Rp: 50.000</td>
-                                    <td>Rp: 25.000</td>
-                                    <td>Beli Baso</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>07-06-2026</td>
-                                    <td>Rp: 50.000</td>
-                                    <td>Rp: 25.000</td>
-                                    <td>Beli Baso</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>07-06-2026</td>
-                                    <td>Rp: 50.000</td>
-                                    <td>Rp: 25.000</td>
-                                    <td>Beli Baso</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">4</th>
-                                    <td>07-06-2026</td>
-                                    <td>Rp: 50.000</td>
-                                    <td>Rp: 25.000</td>
-                                    <td>Beli Baso</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">5</th>
-                                    <td>07-06-2026</td>
-                                    <td>Rp: 50.000</td>
-                                    <td>Rp: 25.000</td>
-                                    <td>Beli Baso</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-        <script>
-            // Ambil data login dari penyimpanan lokal browser
-            const session = localStorage.getItem('user_session');
+          </div>
+        </div>
+      </main>
+    </div>
 
-            // Jika data login kosong (artinya belum pernah login), langsung tendang balik ke login.html
-            if (!session) {
-                alert("Akses Ditolak! Silakan login terlebih dahulu.");
-                window.location.href = "index.html";
-            }
-        </script>
-</body>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-init.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/catatan.js"></script>
+  </body>
 </html>

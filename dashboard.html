@@ -76,11 +76,12 @@
               <div class="bulan-row saldo"><span>Saldo</span><span id="bulanSaldo">Rp 0</span></div>
             </div>
 
-            <div class="goals-box">
-              <h3>Target goals</h3>
-              <div class="goal-item">mei 2026</div>
-              <div class="goal-item">mei 2026</div>
-            </div>
+            <a class="goals-link" href="goals.html">
+              <div class="goals-box" id="containerGoals">
+                <h3>Target goals</h3>
+                <div class="text-center goal-item py-2">Memuat data...</div>
+              </div>
+            </a>
           </div>
         </div>
       </main>
@@ -89,82 +90,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase-init.js"></script>
-
-    <script>
-      // 1. SATPAM HALAMAN
-      const sessionData = localStorage.getItem("user_session");
-      if (!sessionData) {
-        window.location.href = "index.html";
-      }
-      const userAktif = JSON.parse(sessionData);
-
-      async function hitungDataDashboard() {
-        // --- A. LOGIKA ALERT (FLASH MESSAGE) ---
-        const alertElement = document.getElementById("alertLoginSukses");
-        if (sessionStorage.getItem("tampilkan_alert") === "true") {
-          if (alertElement) {
-            alertElement.classList.remove("d-none");
-            alertElement.style.setProperty("display", "block", "important");
-            sessionStorage.removeItem("tampilkan_alert");
-
-            setTimeout(() => {
-              alertElement.style.display = "none";
-            }, 3000);
-          }
-        }
-
-        // --- B. AMBIL NAMA USER ---
-        if (userAktif && userAktif.email) {
-          const { data: userData } = await supabaseClient.from("users").select("name").eq("email", userAktif.email).maybeSingle();
-
-          document.getElementById("namaUserAktif").innerText = userData && userData.name ? userData.name : userAktif.email.split("@")[0];
-        }
-
-        // --- C. AMBIL DATA TRANSAKSI ---
-        const { data: listTransaksi } = await supabaseClient.from("transaksi").select("*").eq("user_id", 1);
-
-        let m = 0,
-          k = 0,
-          html = "";
-        const fmt = (n) => "Rp " + new Intl.NumberFormat("id-ID").format(n);
-
-        if (listTransaksi && listTransaksi.length > 0) {
-          listTransaksi.forEach((i) => {
-            if (i.tipe === "pemasukan") m += i.jumlah;
-            else k += i.jumlah;
-          });
-
-          listTransaksi
-            .sort((a, b) => b.id - a.id)
-            .slice(0, 5)
-            .forEach((i) => {
-              const isMasuk = i.tipe === "pemasukan";
-              html += `<div class="transaksi-item">
-                            <span>${i.deskripsi}</span>
-                            <span class="${isMasuk ? "nominal-masuk" : "nominal-keluar"}">${isMasuk ? "+" : "-"}${fmt(i.jumlah)}</span>
-                         </div>`;
-            });
-        } else {
-          html = `<div class="text-center text-muted py-3">Belum ada transaksi.</div>`;
-        }
-
-        // --- D. UPDATE UI ---
-        document.getElementById("totalSaldo").innerText = document.getElementById("bulanSaldo").innerText = fmt(m - k);
-        document.getElementById("totalMasuk").innerText = document.getElementById("bulanMasuk").innerText = fmt(m);
-        document.getElementById("totalKeluar").innerText = document.getElementById("bulanKeluar").innerText = fmt(k);
-        document.getElementById("containerTransaksi").innerHTML = html;
-        document.getElementById("periodeBulanIni").innerText = new Date().toLocaleDateString("id-ID", { month: "long", year: "numeric" });
-      }
-
-      // --- . LOGOUT ---
-      document.getElementById("logoutD").onclick = document.getElementById("logoutM").onclick = (e) => {
-        e.preventDefault();
-        localStorage.removeItem("user_session");
-        window.location.href = "index.html";
-      };
-
-      // Jalankan fungsi saat halaman dimuat
-      hitungDataDashboard();
-    </script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/dashboard.js"></script>
   </body>
 </html>

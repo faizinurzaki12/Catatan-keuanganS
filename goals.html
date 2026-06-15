@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Target Goals - Catatan Keuangan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/goals.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <main class="main">
+        <div class="row w-100 m-0">
+          <div class="page-title">Target Tabungan</div>
+        </div>
+
+        <div class="card-container-tunggal">
+          <div class="card-aktivitas-lebar">
+            <div class="d-flex justify-content-evenly align-items-center mb-3 border-bottom pb-3">
+              <a class="btn btn-primary text-start btn-sm me-1" href="dashboard.html">Kembali</a>
+              <div class="card-header-title-custom">List Target Kamu</div>
+              <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#modalGoal">+ Tambah Target</button>
+            </div>
+
+            <div id="listGoals" class="list-wrapper">
+              <div class="loader-container">
+                <div class="loader"></div>
+                <div class="loader-text">Memuat......</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="modalGoal" tabindex="-1">
+      <div class="modal-dialog">
+        <form id="formGoal" class="modal-content">
+          <div class="modal-header"><h5>Tambah Target Baru</h5></div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label>Nama Goal</label>
+              <input type="text" name="nama_goal" class="form-control" required placeholder="Contoh: Beli Laptop" />
+            </div>
+            <div class="mb-3">
+              <label>Target Jumlah (Rp)</label>
+              <input type="number" name="target_jumlah" class="form-control" required placeholder="1000000" />
+            </div>
+            <div class="mb-3">
+              <label>Deadline</label>
+              <input type="date" name="deadline" class="form-control" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn-simpan">Simpan & Sisihkan Saldo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- modal untuk nambah tabungan  -->
+    <div class="modal fade" id="modalIsiTabungan" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <form id="formIsiTabungan" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Isi Tabungan Target</h5>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="isi_goal_id" />
+            <div class="mb-3">
+              <label>Nominal Tabungan (Rp)</label>
+              <input type="number" id="jumlah_tabungan" class="form-control" required placeholder="Contoh: 100000" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn-simpan">Simpan Tabungan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-init.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/goals.js"></script>
+  </body>
+</html>

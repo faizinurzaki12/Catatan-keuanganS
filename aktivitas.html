@@ -1,199 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aktivitas - Catatan Keuangan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/aktivitas.css">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/aktivitas.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="wrapper">
-        <nav class="navbar navbar-expand-md navbar-light bg-light d-block d-md-none px-3 shadow-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Catatan Keuangan</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="catatan.html">Catatan Transaksi</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="aktivitas.html">Aktivitas</a></li>
-                        <li class="nav-item"><a href="#" id="logoutM"
-                                style="text-decoration: none; color: red;">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
+      <nav class="navbar navbar-expand-md navbar-light bg-light d-block d-md-none px-3 shadow-sm">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Catatan Keuangan</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="catatan.html">Catatan Transaksi</a></li>
+              <li class="nav-item"><a class="nav-link active" href="aktivitas.html">Aktivitas</a></li>
+              <li class="nav-item"><a href="#" id="logoutM" style="text-decoration: none; color: red">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <aside class="sidebar d-none d-md-flex">
+        <div class="brand">Catatan Keuangan</div>
+        <nav>
+          <a href="dashboard.html">Beranda</a>
+          <a href="catatan.html">Catatan Transaksi</a>
+          <a href="aktivitas.html" class="active">Aktivitas</a>
+          <a href="#" id="logoutD" class="logout">Logout</a>
         </nav>
+      </aside>
 
-        <aside class="sidebar d-none d-md-flex">
-            <div class="brand">Catatan Keuangan</div>
-            <nav>
-                <a href="dashboard.html">Beranda</a>
-                <a href="catatan.html">Catatan Transaksi</a>
-                <a href="aktivitas.html" class="active">Aktivitas</a>
-                <a href="#" id="logoutD" class="logout">Logout</a>
-            </nav>
-        </aside>
-
-        <main class="main">
-            <div class="row w-100 m-0">
-                <div class="page-title">Semua Aktivitas</div>
-            </div>
-
-            <div class="card-container-tunggal">
-                <div class="card-aktivitas-lebar">
-                    <div
-                        class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2 border-bottom pb-3">
-                        <div class="card-header-title-custom">Riwayat Seluruh Aktivitas Keuangan</div>
-                        <div class="action-buttons d-flex gap-2">
-                            <button type="button" class="btn btn-success btn-md" data-bs-toggle="modal"
-                                data-bs-target="#modalPemasukan">+ Pemasukan</button>
-                            <button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal"
-                                data-bs-target="#modalPengeluaran">- Pengeluaran</button>
-                        </div>
-                    </div>
-
-                    <div class="list-wrapper" id="listAktivitas">
-                        <div class="loader-container">
-                            <div class="loader"></div>
-                            <div class="loader-text">Memuat data transaksi<strong>...</strong></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <div class="modal fade" id="modalPemasukan" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Uang Masuk</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formPemasukan">
-                            <input type="hidden" name="tipe" value="pemasukan">
-                            <div class="form-grup">
-                                <label class="text-success">Deskripsi</label>
-                                <input type="text" name="deskripsi" placeholder="Contoh: Gajihan..." required>
-                            </div>
-                            <div class="form-grup">
-                                <label class="text-success">Jumlah</label>
-                                <div class="input-prefix"><span>Rp</span><input type="number" name="jumlah"
-                                        placeholder="0" required min="0"></div>
-                            </div>
-                            <button type="submit" class="btn-simpan btn-masuk w-100 mt-3">Simpan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+      <main class="main">
+        <div class="row w-100 m-0">
+          <div class="page-title">Semua Aktivitas</div>
         </div>
 
-        <div class="modal fade" id="modalPengeluaran" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Uang Keluar</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formPengeluaran">
-                            <input type="hidden" name="tipe" value="pengeluaran">
-                            <div class="form-grup">
-                                <label class="text-danger">Deskripsi</label>
-                                <input type="text" name="deskripsi" placeholder="Contoh: Beli Mie..." required>
-                            </div>
-                            <div class="form-grup">
-                                <label class="text-danger">Jumlah</label>
-                                <div class="input-prefix"><span>Rp</span><input type="number" name="jumlah"
-                                        placeholder="0" required min="0"></div>
-                            </div>
-                            <button type="submit" class="btn btn-danger w-100 mt-3">Simpan</button>
-                        </form>
-                    </div>
-                </div>
+        <div class="card-container-tunggal">
+          <div class="card-aktivitas-lebar">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2 border-bottom pb-3">
+              <div class="card-header-title-custom">Riwayat Seluruh Aktivitas Keuangan</div>
+              <div class="action-buttons d-flex gap-2">
+                <button type="button" class="btn btn-success btn-md" data-bs-toggle="modal" data-bs-target="#modalPemasukan">+ Pemasukan</button>
+                <button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal" data-bs-target="#modalPengeluaran">- Pengeluaran</button>
+              </div>
             </div>
+
+            <div class="list-wrapper" id="listAktivitas">
+              <div class="loader-container">
+                <div class="loader"></div>
+                <div class="loader-text">Memuat data transaksi<strong>...</strong></div>
+              </div>
+            </div>
+          </div>
         </div>
+      </main>
+
+      <div class="modal fade" id="modalPemasukan" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Uang Masuk</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="formPemasukan">
+                <input type="hidden" name="tipe" value="pemasukan" />
+                <div class="form-grup">
+                  <label class="text-success">Deskripsi</label>
+                  <input type="text" name="deskripsi" placeholder="Contoh: Gajihan..." required />
+                </div>
+                <div class="form-grup">
+                  <label class="text-success">Jumlah</label>
+                  <div class="input-prefix"><span>Rp</span><input type="number" name="jumlah" placeholder="0" required min="0" /></div>
+                </div>
+                <button type="submit" class="btn-simpan btn-masuk w-100 mt-3">Simpan</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modalPengeluaran" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Uang Keluar</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="formPengeluaran">
+                <input type="hidden" name="tipe" value="pengeluaran" />
+                <div class="form-grup">
+                  <label class="text-danger">Deskripsi</label>
+                  <input type="text" name="deskripsi" placeholder="Contoh: Beli Mie..." required />
+                </div>
+                <div class="form-grup">
+                  <label class="text-danger">Jumlah</label>
+                  <div class="input-prefix"><span>Rp</span><input type="number" name="jumlah" placeholder="0" required min="0" /></div>
+                </div>
+                <button type="submit" class="btn btn-danger w-100 mt-3">Simpan</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase-init.js"></script>
-
-    <script>
-        const sessionData = localStorage.getItem('user_session');
-        if (!sessionData) window.location.href = "index.html";
-
-        const fmt = (n) => "Rp " + new Intl.NumberFormat('id-ID').format(n);
-
-        async function muatData() {
-            const { data, error } = await supabaseClient
-                .from('transaksi')
-                .select('*')
-                .eq('user_id', 1)
-                .order('id', { ascending: false });
-
-            if (data) {
-                let html = "";
-                data.forEach(i => {
-                    const isMasuk = i.tipe === 'pemasukan';
-                    html += `
-                        <div class="aktivitas-item">
-                            <div class="item-left">
-                                <div class="item-title">${i.deskripsi}</div>
-                            </div>
-                            <div class="item-price ${isMasuk ? 'masuk' : 'keluar'}">
-                                ${isMasuk ? '+' : '-'}${fmt(i.jumlah)}
-                            </div>
-                        </div>`;
-                });
-                document.getElementById('listAktivitas').innerHTML = html ||
-                    `
-                <div class="aktivitas-item">
-                            <div class="item-left">
-                                <div class="item-title">Belum Ada Transaksi</div>
-                            </div>
-                        </div>`;
-            }
-        }
-
-        async function simpan(e, idForm) {
-            e.preventDefault();
-            const form = document.getElementById(idForm);
-            const formData = new FormData(form);
-
-            const { error } = await supabaseClient.from('transaksi').insert([{
-                user_id: 1,
-                deskripsi: formData.get('deskripsi'),
-                jumlah: parseInt(formData.get('jumlah')),
-                tipe: formData.get('tipe')
-            }]);
-
-            if (!error) {
-                form.reset();
-                bootstrap.Modal.getInstance(document.querySelector('.modal.show')).hide();
-                muatData();
-            } else {
-                alert("Gagal: " + error.message);
-            }
-        }
-
-        document.getElementById('formPemasukan').onsubmit = (e) => simpan(e, 'formPemasukan');
-        document.getElementById('formPengeluaran').onsubmit = (e) => simpan(e, 'formPengeluaran');
-        document.getElementById('logoutD').onclick = document.getElementById('logoutM').onclick = () => {
-            localStorage.removeItem('user_session');
-            window.location.href = "index.html";
-        };
-
-        muatData();
-    </script>
-</body>
-
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/aktivitas.js"></script>
+  </body>
 </html>
