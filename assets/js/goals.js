@@ -12,7 +12,7 @@ async function muatGoals() {
   } = await supabaseClient.auth.getUser();
   if (!user) return;
 
-  listContainer.innerHTML = `<div class="text-center py-4">Memuat data...</div>`;
+  listContainer.innerHTML = `<!-- nothing -->`;
 
   const { data, error } = await supabaseClient.from("goals").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
 
@@ -38,7 +38,11 @@ async function muatGoals() {
     });
     listContainer.innerHTML = html;
   } else {
-    listContainer.innerHTML = `<div class="text-center py-4">Belum ada target.</div>`;
+    listContainer.innerHTML = `
+    <div class="goal-card">
+      <div class="goal-header">Belum ada target.</div>
+    </div>
+    `;
   }
 }
 

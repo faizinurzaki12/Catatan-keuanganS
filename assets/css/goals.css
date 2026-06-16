@@ -99,6 +99,8 @@ body {
   justify-content: center;
   padding: 24px 0;
   width: 100%;
+  min-height: 150px;
+  gap: 10px;
 }
 
 .loader {
@@ -109,6 +111,7 @@ body {
   height: 45px;
   animation: spin 1s linear infinite;
   margin-bottom: 12px;
+  will-change: transform;
 }
 
 .loader-text {
@@ -141,6 +144,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 17px;
   margin-bottom: 10px;
 }
 
