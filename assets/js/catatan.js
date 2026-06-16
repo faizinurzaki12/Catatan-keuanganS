@@ -6,7 +6,7 @@ async function muatTabel() {
   const tableBody = document.getElementById("tableBody");
   if (!tableBody) return;
 
-  // 1. Ambil user
+  // 1. Ambil user dari Supabase
   const {
     data: { user },
     error: authError,
@@ -14,6 +14,8 @@ async function muatTabel() {
 
   if (authError || !user) {
     tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Silakan login kembali.</td></tr>`;
+    // Cadangan: Jika lewat pengecekan awal, tendang di sini juga
+    window.location.href = "/";
     return;
   }
 
@@ -45,11 +47,22 @@ async function muatTabel() {
             <td>${item.deskripsi}</td>
         </tr>`;
     });
-    tableBody.innerHTML = rows; // Spinner akan otomatis hilang & diganti data
+    tableBody.innerHTML = rows;
   } else {
     tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Belum ada catatan transaksi</td></tr>`;
   }
 }
 
-// Inisialisasi
-document.addEventListener("DOMContentLoaded", muatTabel);
+// 4. Inisialisasi dengan Penjaga Pintu
+document.addEventListener("DOMContentLoaded", async () => {
+  // Pengecekan sesi lokal (instan)
+  const sessionRaw = localStorage.getItem("user_session");
+
+  if (!sessionRaw) {
+    // Tendang user jika tidak ada session
+    window.location.href = "/";
+  } else {
+    // Jika ada session, jalankan fungsi pemuatan data
+    await muatTabel();
+  }
+});
