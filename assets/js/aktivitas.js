@@ -15,7 +15,7 @@ async function muatData() {
     error: authError,
   } = await supabaseClient.auth.getUser();
   if (authError || !user) {
-    window.location.href = "index.html";
+    window.location.href = "/";
     return;
   }
 
@@ -112,8 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutD = document.getElementById("logoutD");
   const logoutM = document.getElementById("logoutM");
 
-  if (logoutD) logoutD.onclick = () => supabaseClient.auth.signOut().then(() => (window.location.href = "index.html"));
-  if (logoutM) logoutM.onclick = () => supabaseClient.auth.signOut().then(() => (window.location.href = "index.html"));
+  if (logoutD) logoutD.onclick = () => supabaseClient.auth.signOut().then(() => (window.location.href = "/"));
+  if (logoutM) logoutM.onclick = () => supabaseClient.auth.signOut().then(() => (window.location.href = "/"));
 
   muatData();
 });

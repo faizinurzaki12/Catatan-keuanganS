@@ -12,7 +12,7 @@ async function hitungDataDashboard() {
   } = await supabaseClient.auth.getUser();
 
   if (authError || !user) {
-    window.location.href = "index.html";
+    window.location.href = "/";
     return;
   }
 
@@ -97,7 +97,7 @@ async function hitungDataDashboard() {
 async function handleLogout() {
   await supabaseClient.auth.signOut();
   localStorage.removeItem("user_session");
-  window.location.href = "index.html";
+  window.location.href = "/";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
