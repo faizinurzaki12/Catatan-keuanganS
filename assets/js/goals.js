@@ -9,40 +9,42 @@ async function muatGoals() {
   const listContainer = document.getElementById("listGoals");
   if (!listContainer) return;
 
-  // A. Ambil data user dari Supabase
   const {
     data: { user },
     error: authError,
   } = await supabaseClient.auth.getUser();
 
-  // B. Penjaga Pintu: Jika tidak ada user/error, langsung tendang!
   if (authError || !user) {
     window.location.href = "/";
     return;
   }
 
-  // C. Ambil data goals
   const { data, error } = await supabaseClient.from("goals").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
 
-  // D. Handle Error Database
   if (error) {
     listContainer.innerHTML = `<p class="text-danger">Gagal memuat data: ${error.message}</p>`;
     return;
   }
 
-  // E. Render hasil
   if (data && data.length > 0) {
     let html = "";
     data.forEach((g) => {
-      const persen = Math.min(Math.round((g.terkumpul / g.target_jumlah) * 100), 100);
+      // Menggunakan Math.max untuk memastikan nilai negatif di database tidak muncul di UI
+      const terkumpulClean = Math.max(g.terkumpul, 0);
+      const persen = Math.min(Math.round((terkumpulClean / g.target_jumlah) * 100), 100);
+
+      // Logika tambahan: Tombol hapus dinonaktifkan jika sudah ada tabungan
+      const tombolHapus =
+        terkumpulClean > 0 ? `<button class="btn btn-secondary btn-sm" disabled title="Tidak bisa menghapus karena sudah ada tabungan">Hapus</button>` : `<button class="btn btn-danger btn-sm" onclick="hapusGoal('${g.id}')">Hapus</button>`;
+
       html += `
         <div class="goal-card">
             <div class="goal-header"><strong>${g.nama_goal}</strong> <span>${persen}%</span></div>
             <div class="progress-bar-custom"><div class="progress-fill" style="width: ${persen}%"></div></div>
-            <small class="text-muted">${fmt(g.terkumpul)} / ${fmt(g.target_jumlah)}</small>
+            <small class="text-muted">${fmt(terkumpulClean)} / ${fmt(g.target_jumlah)}</small>
             <div class="d-flex gap-2 mt-2">
                 <button class="btn btn-primary btn-sm" onclick="bukaModalTabungan('${g.id}')">Isi Tabungan</button>
-                <button class="btn btn-danger btn-sm" onclick="hapusGoal('${g.id}')">Hapus</button>
+                ${tombolHapus}
             </div>
         </div>`;
     });
@@ -82,7 +84,7 @@ document.getElementById("formGoal").onsubmit = async (e) => {
 };
 
 /**
- * 3. Isi Tabungan
+ * 3. Isi Tabungan (Versi Aman dengan RPC)
  */
 window.bukaModalTabungan = function (id) {
   document.getElementById("isi_goal_id").value = id;
@@ -93,30 +95,25 @@ document.getElementById("formIsiTabungan").onsubmit = async (e) => {
   e.preventDefault();
   const goalId = document.getElementById("isi_goal_id").value;
   const nominal = parseInt(e.target.jumlah_tabungan.value);
+
   const {
     data: { user },
   } = await supabaseClient.auth.getUser();
 
-  const { data: goal } = await supabaseClient.from("goals").select("terkumpul, target_jumlah, nama_goal").eq("id", goalId).single();
+  // Memanggil fungsi database (RPC) untuk keamanan saldo
+  const { data, error } = await supabaseClient.rpc("proses_tabungan", {
+    p_user_id: user.id,
+    p_goal_id: goalId,
+    p_nominal: nominal,
+  });
 
-  const { error: errorUpdate } = await supabaseClient
-    .from("goals")
-    .update({ terkumpul: goal.terkumpul + nominal })
-    .eq("id", goalId);
-
-  const { error: errorTrans } = await supabaseClient.from("transaksi").insert([
-    {
-      user_id: user.id,
-      deskripsi: "Isi Tabungan: " + goal.nama_goal,
-      jumlah: nominal,
-      tipe: "pengeluaran",
-    },
-  ]);
-
-  if (errorUpdate || errorTrans) {
-    alert("Terjadi kesalahan saat menyimpan tabungan.");
+  if (error) {
+    alert("Terjadi kesalahan sistem: " + error.message);
+  } else if (!data.success) {
+    // Menampilkan pesan error dari database jika saldo kurang
+    alert(data.message);
   } else {
-    alert("Berhasil! Tabungan " + fmt(nominal) + " telah masuk ke target.");
+    alert("Berhasil! " + fmt(nominal) + " telah ditabung.");
     bootstrap.Modal.getInstance(document.getElementById("modalIsiTabungan")).hide();
     e.target.reset();
     muatGoals();
@@ -138,7 +135,6 @@ window.hapusGoal = async function (id) {
   }
 };
 
-// Inisialisasi dengan proteksi sesi lokal
 document.addEventListener("DOMContentLoaded", () => {
   const sessionRaw = localStorage.getItem("user_session");
   if (!sessionRaw) {

@@ -1,3 +1,15 @@
+const togglePassword = document.querySelector("#togglePassword");
+const passwordField = document.querySelector("#password");
+
+togglePassword.addEventListener("click", function () {
+  // Cek tipe input saat ini dan balikkan nilainya
+  const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+  passwordField.setAttribute("type", type);
+
+  // Mengubah ikon mata (Mata terbuka saat sembunyi, mata tertutup saat terlihat)
+  this.textContent = type === "password" ? "👁️" : "🙈";
+});
+
 document.getElementById("login").addEventListener("submit", async (e) => {
   e.preventDefault(); // Mencegah reload halaman
 

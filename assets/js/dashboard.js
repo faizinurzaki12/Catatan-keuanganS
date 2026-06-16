@@ -35,7 +35,6 @@ async function hitungDataDashboard() {
 
   if (listTransaksi) {
     listTransaksi.forEach((i) => {
-      // PERBAIKAN: Jika i.jumlah tidak ada, anggap 0 untuk mencegah NaN
       const jumlah = parseInt(i.jumlah) || 0;
       const tgl = new Date(i.created_at);
 
@@ -54,15 +53,19 @@ async function hitungDataDashboard() {
     });
   }
 
+  // Perhitungan Saldo dengan pembatas Math.max agar tidak negatif
+  const totalSaldo = Math.max(totalMasuk - totalKeluar, 0);
+  const bulanSaldo = Math.max(bulanMasuk - bulanKeluar, 0);
+
   // Update UI 3 Card Atas
-  document.getElementById("totalSaldo").innerText = fmt(totalMasuk - totalKeluar);
+  document.getElementById("totalSaldo").innerText = fmt(totalSaldo);
   document.getElementById("totalMasuk").innerText = fmt(totalMasuk);
   document.getElementById("totalKeluar").innerText = fmt(totalKeluar);
 
   // Update UI Card "Bulan Ini"
   document.getElementById("bulanMasuk").innerText = fmt(bulanMasuk);
   document.getElementById("bulanKeluar").innerText = fmt(bulanKeluar);
-  document.getElementById("bulanSaldo").innerText = fmt(bulanMasuk - bulanKeluar);
+  document.getElementById("bulanSaldo").innerText = fmt(bulanSaldo);
   document.getElementById("periodeBulanIni").innerText = sekarang.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
 
   // Render Transaksi Terakhir
@@ -71,8 +74,12 @@ async function hitungDataDashboard() {
     listTransaksi.slice(0, 5).forEach((i) => {
       const isMasuk = i.tipe === "pemasukan";
       const nominal = parseInt(i.jumlah) || 0;
+
+      // Update: Menampilkan deskripsi penuh tanpa pemotongan agar nama goal terlihat jelas
+      const deskripsiRapi = i.deskripsi;
+
       htmlT += `<div class="transaksi-item">
-                  <span class="nama">${i.deskripsi}</span>
+                  <span class="nama">${deskripsiRapi}</span>
                   <span class="${isMasuk ? "nominal-masuk" : "nominal-keluar"}">${isMasuk ? "+" : "-"}${fmt(nominal)}</span>
                 </div>`;
     });
