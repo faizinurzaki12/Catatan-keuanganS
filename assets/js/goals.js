@@ -93,12 +93,21 @@ window.bukaModalTabungan = function (id) {
 
 document.getElementById("formIsiTabungan").onsubmit = async (e) => {
   e.preventDefault();
+
+  // Menangkap tombol submit untuk proteksi double-click
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+
   const goalId = document.getElementById("isi_goal_id").value;
   const nominal = parseInt(e.target.jumlah_tabungan.value);
 
   const {
     data: { user },
   } = await supabaseClient.auth.getUser();
+
+  // Logika anti double-click
+  submitBtn.disabled = true;
+  const originalText = submitBtn.innerText;
+  submitBtn.innerText = "Memproses...";
 
   // Memanggil fungsi database (RPC) untuk keamanan saldo
   const { data, error } = await supabaseClient.rpc("proses_tabungan", {
@@ -109,11 +118,18 @@ document.getElementById("formIsiTabungan").onsubmit = async (e) => {
 
   if (error) {
     alert("Terjadi kesalahan sistem: " + error.message);
+    submitBtn.disabled = false;
+    submitBtn.innerText = originalText;
   } else if (!data.success) {
     // Menampilkan pesan error dari database jika saldo kurang
     alert(data.message);
+    submitBtn.disabled = false;
+    submitBtn.innerText = originalText;
   } else {
     alert("Berhasil! " + fmt(nominal) + " telah ditabung.");
+    submitBtn.disabled = false;
+    submitBtn.innerText = originalText;
+
     bootstrap.Modal.getInstance(document.getElementById("modalIsiTabungan")).hide();
     e.target.reset();
     muatGoals();

@@ -58,20 +58,30 @@ async function muatData() {
 }
 
 /**
- * 2. Fungsi Simpan Transaksi dengan Alert
+ * 2. Fungsi Simpan Transaksi dengan Proteksi Double-Click
  */
 async function simpan(e, idForm) {
   e.preventDefault();
+
+  // Ambil elemen form dan tombol submit-nya
+  const form = document.getElementById(idForm);
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  // Ambil data user
   const {
     data: { user },
   } = await supabaseClient.auth.getUser();
   if (!user) return alert("Sesi habis, silakan login kembali.");
 
-  const form = document.getElementById(idForm);
   const formData = new FormData(form);
   const deskripsi = formData.get("deskripsi");
   const jumlah = parseInt(formData.get("jumlah"));
   const tipe = formData.get("tipe");
+
+  // --- LOGIKA ANTI DOUBLE CLICK ---
+  submitBtn.disabled = true;
+  const originalText = submitBtn.innerText;
+  submitBtn.innerText = "Memproses...";
 
   const { error } = await supabaseClient.from("transaksi").insert([
     {
@@ -83,7 +93,6 @@ async function simpan(e, idForm) {
   ]);
 
   if (!error) {
-    // Alert sukses
     alert(`Berhasil! Transaksi "${deskripsi}" sebesar ${fmt(jumlah)} telah disimpan.`);
 
     form.reset();
@@ -91,12 +100,14 @@ async function simpan(e, idForm) {
     const modal = bootstrap.Modal.getInstance(modalEl);
     if (modal) modal.hide();
 
-    // Refresh data
     muatData();
   } else {
-    // Alert error
     alert("Gagal menyimpan: " + error.message);
   }
+
+  // Kembalikan tombol ke sedia kala
+  submitBtn.disabled = false;
+  submitBtn.innerText = originalText;
 }
 
 /**
