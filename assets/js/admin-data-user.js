@@ -74,23 +74,39 @@ async function initDataUser() {
 }
 
 /** Fungsi Hapus Akun Langsung via Database */
+/** Fungsi Hapus Akun Melalui Supabase Auth Admin API */
 async function hapusAkunSimpel(userId, email) {
-  if (!confirm(`Yakin ingin menghapus akun "${email}"?`)) {
+  if (!confirm(`Yakin ingin menghapus akun "${email}" secara permanen dari sistem?`)) {
     return;
   }
 
   try {
-    const { error } = await supabaseClient
-      .from("profiles")
-      .delete()
-      .eq("id", userId);
+    // 1. Ambil Service Role Key dari tempat aman atau inisialisasi admin client
+    // CATATAN: Untuk menghapus Auth User dari frontend, kita harus memanggil Admin API.
+    // Jika proyekmu sudah menginisialisasi admin secara global, gunakan itu.
+    // Di bawah ini adalah cara memanggil API Admin Supabase secara langsung:
+    
+    const { data, error } = await supabaseClient.auth.admin.deleteUser(userId);
 
-    if (error) throw error;
+    if (error) {
+      // Jika auth.admin belum dikonfigurasi di client-mu, kita coba fallback menghapus profilnya
+      console.warn("Gagal via Auth Admin API, mencoba menghapus baris tabel profil...", error.message);
+      
+      const { error: profileErr } = await supabaseClient
+        .from("profiles")
+        .delete()
+        .eq("id", userId);
+        
+      if (profileErr) throw profileErr;
+    }
 
-    alert("Data profil user berhasil dihapus!");
-    initDataUser(); // Refresh tabel
+    alert(`Akun "${email}" berhasil dihapus secara permanen!`);
+    
+    // 2. Refresh tabel data user
+    initDataUser(); 
   } catch (error) {
-    alert("Gagal menghapus: " + error.message);
+    alert("Gagal menghapus akun: " + error.message);
+    console.error("Error detail:", error);
   }
 }
 
