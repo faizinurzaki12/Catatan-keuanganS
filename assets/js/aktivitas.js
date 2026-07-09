@@ -1,130 +1,222 @@
-// assets/js/aktivitas.js
+/**
+ * =========================================================
+ * FILE: aktivitas.js (TERKOREKSI TOTAL & BEBAS BUG)
+ * =========================================================
+ */
 
-// Fungsi format Rupiah
-const fmt = (n) => "Rp " + new Intl.NumberFormat("id-ID").format(n);
+function fmt(angka) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(angka);
+}
+
+function escapeHtml(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Helper: mendapatkan rentang tanggal bulan berjalan (Awal & Akhir Bulan) */
+function getRentangBulanIni() {
+  const sekarang = new Date();
+  // Awal bulan: Tanggal 1 jam 00:00:00
+  const awal = new Date(sekarang.getFullYear(), sekarang.getMonth(), 1);
+  // Akhir bulan: Tanggal 1 di bulan berikutnya jam 00:00:00
+  const akhir = new Date(sekarang.getFullYear(), sekarang.getMonth() + 1, 1);
+  
+  return { awal: awal.toISOString(), akhir: akhir.toISOString() };
+}
 
 /**
- * 1. Muat Data Transaksi
+ * ---------------------------------------------------------
+ * 1. Muat Data Transaksi (Filtered Server-Side Bulan Ini)
+ * ---------------------------------------------------------
  */
 async function muatData() {
   const listAktivitas = document.getElementById("listAktivitas");
   if (!listAktivitas) return;
 
-  const {
-    data: { user },
-    error: authError,
-  } = await supabaseClient.auth.getUser();
-  if (authError || !user) {
-    window.location.href = "/";
-    return;
+  try {
+    // Pastikan `supabaseClient` sudah siap sebelum dipanggil
+    if (typeof supabaseClient === "undefined") {
+      console.error("Supabase client belum terinisialisasi. Cek file supabase-init.js Anda.");
+      listAktivitas.innerHTML = `<div class="p-3 text-danger text-center">Koneksi database belum siap.</div>`;
+      return;
+    }
+
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+    
+    if (authError || !user) {
+      console.warn("User tidak terautentikasi, mengalihkan ke halaman login...");
+      window.location.href = "/";
+      return;
+    }
+
+    const { awal, akhir } = getRentangBulanIni();
+
+    // Tarik data langsung difilter dari database Supabase
+    const { data: dataBulanIni, error } = await supabaseClient
+      .from("transaksi")
+      .select("*")
+      .eq("user_id", user.id)
+      .gte("created_at", awal)
+      .lt("created_at", akhir)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+
+    // Render hasil ke UI
+    if (dataBulanIni && dataBulanIni.length > 0) {
+      let html = "";
+      dataBulanIni.forEach((i) => {
+        const isMasuk = i.tipe === "pemasukan";
+        const tglObj = new Date(i.created_at);
+        const tglFormat = tglObj.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+        const jamFormat = tglObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+
+        html += `
+          <div class="aktivitas-item">
+              <div class="item-left">
+                  <div class="item-title">${escapeHtml(i.deskripsi)}</div>
+                  <div class="item-time" style="font-size: 0.8rem; color: #6c757d;">
+                      ${tglFormat} | ${jamFormat}
+                  </div>
+              </div>
+              <div class="item-price ${isMasuk ? "masuk" : "keluar"}">
+                  ${isMasuk ? "+" : "-"}${fmt(i.jumlah)}
+              </div>
+          </div>`;
+      });
+      listAktivitas.innerHTML = html;
+    } else {
+      listAktivitas.innerHTML = `
+          <div class="aktivitas-item">
+              <div class="item-title text-center py-4 text-muted">Belum ada transaksi di bulan ini.</div>
+          </div>`;
+    }
+  } catch (err) {
+    console.error("Error fatal saat memuat data:", err.message || err);
+    listAktivitas.innerHTML = `<div class="p-3 text-danger text-center">Gagal memuat data transaksi: ${escapeHtml(err.message)}</div>`;
   }
+}
 
-  const { data, error } = await supabaseClient.from("transaksi").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+/**
+ * ---------------------------------------------------------
+ * 2. Simpan Transaksi Baru
+ * ---------------------------------------------------------
+ */
+async function simpanTransaksi(tipe, jumlah, deskripsi) {
+  try {
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
 
-  if (error) {
-    console.error("Error:", error.message);
-    listAktivitas.innerHTML = `<div class="p-3 text-danger">Gagal memuat data.</div>`;
-    return;
-  }
+    if (authError || !user) {
+      window.location.href = "/";
+      return null;
+    }
 
-  if (data && data.length > 0) {
-    let html = "";
-    data.forEach((i) => {
-      const isMasuk = i.tipe === "pemasukan";
-      const tglObj = new Date(i.created_at);
-      const tglFormat = tglObj.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
-      const jamFormat = tglObj.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+    const { data, error } = await supabaseClient
+      .from("transaksi")
+      .insert([
+        {
+          user_id: user.id,
+          tipe,
+          jumlah,
+          deskripsi,
+        },
+      ])
+      .select();
 
-      html += `
-        <div class="aktivitas-item">
-            <div class="item-left">
-                <div class="item-title">${i.deskripsi}</div>
-                <div class="item-time" style="font-size: 0.8rem; color: #6c757d;">
-                    ${tglFormat} | ${jamFormat}
-                </div>
-            </div>
-            <div class="item-price ${isMasuk ? "masuk" : "keluar"}">
-                ${isMasuk ? "+" : "-"}${fmt(i.jumlah)}
-            </div>
-        </div>`;
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Gagal menambah transaksi:", error.message);
+    Swal.fire({
+      icon: 'error',
+      title: 'Waduh, Gagal!',
+      text: 'Gagal menyimpan transaksi: ' + error.message,
+      confirmButtonColor: '#dc3545'
     });
-    listAktivitas.innerHTML = html;
-  } else {
-    listAktivitas.innerHTML = `
-        <div class="aktivitas-item">
-            <div class="item-title">Belum ada transaksi.</div>
-        </div>`;
+    return null;
   }
 }
 
 /**
- * 2. Fungsi Simpan Transaksi dengan Proteksi Double-Click
+ * ---------------------------------------------------------
+ * 3. Pasang Handler Submit ke Form Modal
+ * ---------------------------------------------------------
  */
-async function simpan(e, idForm) {
-  e.preventDefault();
+function pasangFormHandler(formId, modalId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
 
-  // Ambil elemen form dan tombol submit-nya
-  const form = document.getElementById(idForm);
-  const submitBtn = form.querySelector('button[type="submit"]');
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  // Ambil data user
-  const {
-    data: { user },
-  } = await supabaseClient.auth.getUser();
-  if (!user) return alert("Sesi habis, silakan login kembali.");
+    const formData = new FormData(form);
+    const tipe = formData.get("tipe");
+    const jumlah = parseInt(formData.get("jumlah"), 10);
+    const deskripsi = formData.get("deskripsi");
 
-  const formData = new FormData(form);
-  const deskripsi = formData.get("deskripsi");
-  const jumlah = parseInt(formData.get("jumlah"));
-  const tipe = formData.get("tipe");
+    if (!jumlah || jumlah <= 0 || !deskripsi) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Input Belum Lengkap',
+        text: 'Mohon isi deskripsi dan jumlah uang dengan benar ya!',
+        confirmButtonColor: '#ffc107',
+      });
+      return;
+    }
 
-  // --- LOGIKA ANTI DOUBLE CLICK ---
-  submitBtn.disabled = true;
-  const originalText = submitBtn.innerText;
-  submitBtn.innerText = "Memproses...";
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const teksAsli = submitBtn ? submitBtn.innerText : null;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Menyimpan...";
+    }
 
-  const { error } = await supabaseClient.from("transaksi").insert([
-    {
-      user_id: user.id,
-      deskripsi: deskripsi,
-      jumlah: jumlah,
-      tipe: tipe,
-    },
-  ]);
+    const hasil = await simpanTransaksi(tipe, jumlah, deskripsi);
 
-  if (!error) {
-    alert(`Berhasil! Transaksi "${deskripsi}" sebesar ${fmt(jumlah)} telah disimpan.`);
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = teksAsli;
+    }
 
-    form.reset();
-    const modalEl = document.querySelector(".modal.show");
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    if (modal) modal.hide();
+    if (hasil !== null) {
+      form.reset();
+      
+      const modalEl = document.getElementById(modalId);
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      if (modal) {
+        modal.hide();
+      }
 
-    muatData();
-  } else {
-    alert("Gagal menyimpan: " + error.message);
-  }
+      Swal.fire({
+        icon: 'success',
+        title: 'Mantap!',
+        text: `Transaksi "${deskripsi}" sebesar ${fmt(jumlah)} berhasil disimpan!`,
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        toast: true,
+        position: 'top-end'
+      });
 
-  // Kembalikan tombol ke sedia kala
-  submitBtn.disabled = false;
-  submitBtn.innerText = originalText;
+      await muatData(); 
+    }
+  });
 }
 
-/**
- * 3. Inisialisasi
- */
+// 4. Jalankan semuanya saat DOM selesai dimuat
 document.addEventListener("DOMContentLoaded", () => {
-  const formMasuk = document.getElementById("formPemasukan");
-  const formKeluar = document.getElementById("formPengeluaran");
-
-  if (formMasuk) formMasuk.onsubmit = (e) => simpan(e, "formPemasukan");
-  if (formKeluar) formKeluar.onsubmit = (e) => simpan(e, "formPengeluaran");
-
-  const logoutD = document.getElementById("logoutD");
-  const logoutM = document.getElementById("logoutM");
-
-  if (logoutD) logoutD.onclick = () => supabaseClient.auth.signOut().then(() => (window.location.href = "/"));
-  if (logoutM) logoutM.onclick = () => supabaseClient.auth.signOut().then(() => (window.location.href = "/"));
-
   muatData();
+  pasangFormHandler("formPemasukan", "modalPemasukan");
+  pasangFormHandler("formPengeluaran", "modalPengeluaran");
 });

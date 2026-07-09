@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dashboard</title>
+    <title>Dashboard - Catatan Keuangan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/budget.css" />
   </head>
 
   <body>
@@ -21,25 +22,26 @@
               <li class="nav-item"><a class="nav-link active" href="/dashboard">Dashboard</a></li>
               <li class="nav-item"><a class="nav-link" href="/catatan">Catatan Transaksi</a></li>
               <li class="nav-item"><a class="nav-link" href="/aktivitas">Aktivitas</a></li>
-              <li class="nav-item"><a href="/" id="logoutM" style="text-decoration: none; color: red">Logout</a></li>
+              <li class="nav-item"><a href="#" id="logoutM" style="text-decoration: none; color: red">Logout</a></li>
             </ul>
           </div>
         </div>
       </nav>
+
       <aside class="sidebar d-none d-md-flex">
         <div class="brand">Catatan Keuangan</div>
         <nav>
           <a href="/dashboard" class="active">Beranda</a>
           <a href="/catatan">Catatan Transaksi</a>
           <a href="/aktivitas">Aktivitas</a>
-          <a href="/" id="logoutD" class="logout">Logout</a>
+          <a href="#" id="logoutD" class="logout">Logout</a>
         </nav>
       </aside>
 
       <main class="main">
         <div class="d-flex page-title justify-content-between align-items-center mb-3">
           <div>Beranda</div>
-          <div id="namaUserAktif">Loading...</div>
+          <div id="namaUserAktif">Memuat nama...</div>
         </div>
 
         <div id="alertLoginSukses" class="alert alert-success alert-dismissible fade show d-none" role="alert" style="border-radius: 10px; margin-bottom: 20px">
@@ -64,9 +66,12 @@
 
         <div class="bottom-row">
           <div class="transaksi-box">
-            <h3>Transaksi Terbaru</h3>
-            <div id="containerTransaksi"></div>
+            <h3>Transaksi Terbaru Bulan Ini</h3>
+            <div id="containerTransaksi">
+              <div class="text-center py-3 text-muted">Memuat transaksi...</div>
+            </div>
           </div>
+
           <div class="right-col">
             <div class="bulan-box">
               <h3>Bulan Ini</h3>
@@ -76,7 +81,31 @@
               <div class="bulan-row saldo"><span>Saldo</span><span id="bulanSaldo">Rp 0</span></div>
             </div>
 
-            <a class="goals-link" href="/goals">
+            <!-- ===== Budget Box ===== -->
+            <div class="budget-box" id="containerBudget">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="mb-0">Budget Bulan Ini</h3>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalBudget">Atur</button>
+              </div>
+
+              <div id="budgetKosong" class="text-center text-muted py-2" style="display: none">
+                Kamu belum atur budget bulan ini.
+              </div>
+
+              <div id="budgetIsi" style="display: none">
+                <div class="progress budget-progress">
+                  <div id="progressBudget" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2 budget-angka">
+                  <span id="budgetTerpakai">Rp 0</span>
+                  <span id="budgetTotal" class="text-muted">dari Rp 0</span>
+                </div>
+                <div id="peringatanBudget" class="mt-2" style="display: none"></div>
+              </div>
+            </div>
+            <!-- ===== /Budget Box ===== -->
+
+            <a class="goals-link" href="goals.html" style="text-decoration: none; color: inherit;">
               <div class="goals-box" id="containerGoals">
                 <h3>Target goals</h3>
                 <div class="text-center goal-item py-2">Memuat data...</div>
@@ -87,10 +116,33 @@
       </main>
     </div>
 
+    <!-- ===== Modal Atur Budget ===== -->
+    <div class="modal fade" id="modalBudget" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <form id="formBudget" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Atur Budget Bulan Ini</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label class="form-label">Batas Pengeluaran (Rp)</label>
+            <input type="number" id="inputBudget" class="form-control" min="0" required placeholder="cth: 2000000" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- ===== /Modal Atur Budget ===== -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase-init.js"></script>
+    <script src="assets/js/guard.js"></script>
     <script src="assets/js/auth.js"></script>
+    <script src="assets/js/budget.js"></script>
     <script src="assets/js/dashboard.js"></script>
   </body>
 </html>

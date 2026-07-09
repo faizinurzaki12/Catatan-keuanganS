@@ -40,6 +40,6 @@ document.getElementById("login").addEventListener("submit", async (e) => {
     localStorage.setItem("user_session", JSON.stringify(data.user));
 
     // Lolos ke halaman utama
-    window.location.href = "/dashboard";
+    window.location.href = "/dashboard.html";
   }
 });

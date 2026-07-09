@@ -1,7 +1,102 @@
-// assets/js/dashboard.js
+/**
+ * =========================================================
+ * FILE: dashboard.js
+ * =========================================================
+ */
 
-const fmt = (n) => "Rp " + new Intl.NumberFormat("id-ID").format(n);
+/** Helper: format Rupiah tanpa desimal */
+function fmt(angka) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(angka);
+}
 
+/** Helper: dapatkan rentang tanggal bulan berjalan (awal & akhir eksklusif) */
+function getRentangBulanIni() {
+  const sekarang = new Date();
+  const awal = new Date(sekarang.getFullYear(), sekarang.getMonth(), 1);
+  const akhir = new Date(sekarang.getFullYear(), sekarang.getMonth() + 1, 1);
+  return { awal: awal.toISOString(), akhir: akhir.toISOString(), sekarang };
+}
+
+/**
+ * ---------------------------------------------------------
+ * FUNGSI TAMBAH DATA (INSERT)
+ * user_id disisipkan otomatis dari sesi login yang aktif.
+ * ---------------------------------------------------------
+ */
+async function tambahTransaksi(tipe, jumlah, deskripsi) {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabaseClient.auth.getUser();
+
+  if (authError || !user) {
+    window.location.href = "/auth.html";
+    return null;
+  }
+
+  const { data, error } = await supabaseClient.from("transaksi").insert([
+    {
+      user_id: user.id, // <-- WAJIB, ini yang membuat RLS bisa bekerja
+      tipe, // "pemasukan" atau "pengeluaran"
+      jumlah,
+      deskripsi,
+    },
+  ]);
+
+  if (error) {
+    console.error("Gagal menambah transaksi:", error.message);
+    alert("Gagal menyimpan transaksi: " + error.message);
+    return null;
+  }
+
+  // Refresh dashboard setelah insert berhasil
+  await hitungDataDashboard();
+  return data;
+}
+
+async function tambahGoal(namaGoal, targetNominal) {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabaseClient.auth.getUser();
+
+  if (authError || !user) {
+    window.location.href = "/auth.html";
+    return null;
+  }
+
+  const { data, error } = await supabaseClient.from("goals").insert([
+    {
+      user_id: user.id,
+      nama_goal: namaGoal,
+      target_nominal: targetNominal,
+    },
+  ]);
+
+  if (error) {
+    console.error("Gagal menambah goal:", error.message);
+    alert("Gagal menyimpan goal: " + error.message);
+    return null;
+  }
+
+  await hitungDataDashboard();
+  return data;
+}
+
+/**
+ * ---------------------------------------------------------
+ * FUNGSI AMBIL & HITUNG DATA DASHBOARD
+ * - Difilter per user_id (RLS di server jadi lapisan kedua)
+ * - Total pemasukan/pengeluaran BULAN INI difilter via query
+ *   tanggal dinamis (server-side) -> otomatis reset tiap bulan baru.
+ * - Saldo akhir dihitung dari SELURUH riwayat (all-time).
+ * ---------------------------------------------------------
+ */
 async function hitungDataDashboard() {
   const userDisplay = document.getElementById("namaUserAktif");
   const containerGoals = document.getElementById("containerGoals");
@@ -12,106 +107,117 @@ async function hitungDataDashboard() {
   } = await supabaseClient.auth.getUser();
 
   if (authError || !user) {
-    window.location.href = "/";
+    window.location.href = "/auth.html";
     return;
   }
 
-  userDisplay.innerText = user.email.split("@")[0];
-
-  // Ambil Transaksi & Goals
-  const { data: listTransaksi } = await supabaseClient.from("transaksi").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
-
-  const { data: listGoals } = await supabaseClient.from("goals").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3);
-
-  // Perhitungan
-  let totalMasuk = 0,
-    totalKeluar = 0; // Total Keseluruhan
-  let bulanMasuk = 0,
-    bulanKeluar = 0; // Khusus Bulan Ini
-
-  const sekarang = new Date();
-  const bulanIni = sekarang.getMonth();
-  const tahunIni = sekarang.getFullYear();
-
-  if (listTransaksi) {
-    listTransaksi.forEach((i) => {
-      const jumlah = parseInt(i.jumlah) || 0;
-      const tgl = new Date(i.created_at);
-
-      // 1. Hitung Total Keseluruhan
-      if (i.tipe === "pemasukan") {
-        totalMasuk += jumlah;
-      } else {
-        totalKeluar += jumlah;
-      }
-
-      // 2. Hitung Khusus Bulan Ini
-      if (tgl.getMonth() === bulanIni && tgl.getFullYear() === tahunIni) {
-        if (i.tipe === "pemasukan") bulanMasuk += jumlah;
-        else bulanKeluar += jumlah;
-      }
-    });
+  if (userDisplay) {
+    userDisplay.innerText = user.email.split("@")[0];
   }
 
-  // Perhitungan Saldo dengan pembatas Math.max agar tidak negatif
-  const totalSaldo = Math.max(totalMasuk - totalKeluar, 0);
+  const { awal, akhir, sekarang } = getRentangBulanIni();
+
+  const { data: semuaTransaksi, error: errSemua } = await supabaseClient
+    .from("transaksi")
+    .select("tipe, jumlah")
+    .eq("user_id", user.id);
+
+  if (errSemua) console.error("Gagal ambil semua transaksi:", errSemua.message);
+
+  const { data: transaksiBulanIni, error: errBulan } = await supabaseClient
+    .from("transaksi")
+    .select("*")
+    .eq("user_id", user.id)
+    .gte("created_at", awal)
+    .lt("created_at", akhir)
+    .order("created_at", { ascending: false });
+
+  if (errBulan) console.error("Gagal ambil transaksi bulan ini:", errBulan.message);
+
+  const { data: listGoals, error: errGoals } = await supabaseClient
+    .from("goals")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(3);
+
+  if (errGoals) console.error("Gagal ambil goals:", errGoals.message);
+
+  let totalMasukSelamanya = 0;
+  let totalKeluarSelamanya = 0;
+  (semuaTransaksi || []).forEach((i) => {
+    const jumlah = parseInt(i.jumlah) || 0;
+    if (i.tipe === "pemasukan") totalMasukSelamanya += jumlah;
+    else totalKeluarSelamanya += jumlah;
+  });
+  const totalSaldoBersih = Math.max(totalMasukSelamanya - totalKeluarSelamanya, 0);
+
+  let bulanMasuk = 0;
+  let bulanKeluar = 0;
+  (transaksiBulanIni || []).forEach((i) => {
+    const jumlah = parseInt(i.jumlah) || 0;
+    if (i.tipe === "pemasukan") bulanMasuk += jumlah;
+    else bulanKeluar += jumlah;
+  });
   const bulanSaldo = Math.max(bulanMasuk - bulanKeluar, 0);
 
-  // Update UI 3 Card Atas
-  document.getElementById("totalSaldo").innerText = fmt(totalSaldo);
-  document.getElementById("totalMasuk").innerText = fmt(totalMasuk);
-  document.getElementById("totalKeluar").innerText = fmt(totalKeluar);
+  setText("totalSaldo", fmt(totalSaldoBersih));
+  setText("totalMasuk", fmt(bulanMasuk));
+  setText("totalKeluar", fmt(bulanKeluar));
 
-  // Update UI Card "Bulan Ini"
-  document.getElementById("bulanMasuk").innerText = fmt(bulanMasuk);
-  document.getElementById("bulanKeluar").innerText = fmt(bulanKeluar);
-  document.getElementById("bulanSaldo").innerText = fmt(bulanSaldo);
-  document.getElementById("periodeBulanIni").innerText = sekarang.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+  setText("bulanMasuk", fmt(bulanMasuk));
+  setText("bulanKeluar", fmt(bulanKeluar));
+  setText("bulanSaldo", fmt(bulanSaldo));
+  setText(
+    "periodeBulanIni",
+    sekarang.toLocaleDateString("id-ID", { month: "long", year: "numeric" })
+  );
 
-  // Render Transaksi Terakhir
   let htmlT = "";
-  if (listTransaksi && listTransaksi.length > 0) {
-    listTransaksi.slice(0, 5).forEach((i) => {
+  if (transaksiBulanIni && transaksiBulanIni.length > 0) {
+    transaksiBulanIni.slice(0, 5).forEach((i) => {
       const isMasuk = i.tipe === "pemasukan";
       const nominal = parseInt(i.jumlah) || 0;
-
-      // Update: Menampilkan deskripsi penuh tanpa pemotongan agar nama goal terlihat jelas
-      const deskripsiRapi = i.deskripsi;
-
       htmlT += `<div class="transaksi-item">
-                  <span class="nama">${deskripsiRapi}</span>
-                  <span class="${isMasuk ? "nominal-masuk" : "nominal-keluar"}">${isMasuk ? "+" : "-"}${fmt(nominal)}</span>
+                  <span class="nama">${escapeHtml(i.deskripsi)}</span>
+                  <span class="${isMasuk ? "nominal-masuk" : "nominal-keluar"}">
+                    ${isMasuk ? "+" : "-"}${fmt(nominal)}
+                  </span>
                 </div>`;
     });
   } else {
-    htmlT = `<div class="text-center nama py-3">Belum ada transaksi.</div>`;
+    htmlT = `<div class="text-center nama py-3">Belum ada transaksi di bulan ini.</div>`;
   }
-  document.getElementById("containerTransaksi").innerHTML = htmlT;
+  const elTransaksi = document.getElementById("containerTransaksi");
+  if (elTransaksi) elTransaksi.innerHTML = htmlT;
 
-  // Render Goals
-  let htmlG = "<h3>Target goals</h3>";
-  if (listGoals && listGoals.length > 0) {
-    listGoals.forEach((g) => {
-      htmlG += `<div class="goal-item">${g.nama_goal}</div>`;
-    });
-  } else {
-    htmlG += `<div class="goal-item py-2">Belum ada target.</div>`;
+  if (containerGoals) {
+    let htmlG = "<h3>Target goals</h3>";
+    if (listGoals && listGoals.length > 0) {
+      listGoals.forEach((g) => {
+        htmlG += `<div class="goal-item">${escapeHtml(g.nama_goal)}</div>`;
+      });
+    } else {
+      htmlG += `<div class="goal-item py-2">Belum ada target.</div>`;
+    }
+    containerGoals.innerHTML = htmlG;
   }
-  containerGoals.innerHTML = htmlG;
 }
 
-// Logout & Init
-async function handleLogout() {
-  await supabaseClient.auth.signOut();
-  localStorage.removeItem("user_session");
-  window.location.href = "/";
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = text;
+}
+
+function escapeHtml(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const logoutD = document.getElementById("logoutD");
-  const logoutM = document.getElementById("logoutM");
-  if (logoutD) logoutD.addEventListener("click", handleLogout);
-  if (logoutM) logoutM.addEventListener("click", handleLogout);
-
   hitungDataDashboard();
 });

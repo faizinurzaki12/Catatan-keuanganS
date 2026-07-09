@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Catatan Keuangan</title>
+    <title>Daftar - Catatan Keuangan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
       body {
@@ -33,25 +33,30 @@
   <body>
     <div class="auth-card">
       <div class="auth-brand">Catatan Keuangan</div>
-      <div class="auth-sub">Masuk ke akun kamu</div>
+      <div class="auth-sub">Buat akun baru</div>
 
-      <div id="loginError" class="alert alert-danger py-2 d-none" role="alert"></div>
+      <div id="regError" class="alert alert-danger py-2 d-none" role="alert"></div>
+      <div id="regSuccess" class="alert alert-success py-2 d-none" role="alert"></div>
 
-      <form id="formLogin">
+      <form id="formRegister">
         <div class="mb-3">
           <label class="form-label">Email</label>
-          <input type="email" class="form-control" id="loginEmail" required />
+          <input type="email" class="form-control" id="regEmail" required />
         </div>
         <div class="mb-3">
           <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="loginPassword" required minlength="6" />
+          <input type="password" class="form-control" id="regPassword" required minlength="6" />
         </div>
-        <button type="submit" class="btn btn-primary">Masuk</button>
+        <div class="mb-3">
+          <label class="form-label">Konfirmasi Password</label>
+          <input type="password" class="form-control" id="regPasswordConfirm" required minlength="6" />
+        </div>
+        <button type="submit" class="btn btn-primary">Daftar</button>
       </form>
 
       <div class="switch-text">
-        Belum punya akun?
-        <a href="register.html">Daftar di sini</a>
+        Sudah punya akun?
+        <a href="login.html">Masuk di sini</a>
       </div>
     </div>
 

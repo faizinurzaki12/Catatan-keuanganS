@@ -1,0 +1,274 @@
+/* =========================================================
+   FILE: admin.css
+   Custom style panel admin. Dipakai bareng Bootstrap 5.
+   ========================================================= */
+
+:root {
+  --admin-dark: #1e293b;
+  --admin-dark-2: #273449;
+  --admin-accent: #6366f1;
+  --admin-text-muted: #94a3b8;
+  --admin-border: #334155;
+}
+
+body {
+  background: #f4f6fb;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+}
+
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar (desktop only, disembunyikan di mobile lewat class d-none d-md-flex di HTML) ---------- */
+.admin-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--admin-dark);
+  color: #fff;
+  flex-direction: column;
+  padding: 24px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0 24px;
+  margin-bottom: 6px;
+}
+
+.admin-user-info {
+  color: var(--admin-text-muted);
+  font-size: 0.78rem;
+  padding: 0 24px;
+  margin-bottom: 26px;
+  word-break: break-all;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.admin-nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  border-left: 3px solid transparent;
+  transition: background 0.15s, color 0.15s;
+}
+
+.admin-nav a:hover {
+  background: var(--admin-dark-2);
+  color: #fff;
+}
+
+.admin-nav a.active {
+  background: var(--admin-dark-2);
+  color: #fff;
+  border-left-color: var(--admin-accent);
+  font-weight: 600;
+}
+
+.admin-nav a.admin-nav-secondary {
+  margin-top: 16px;
+  border-top: 1px solid var(--admin-border);
+  padding-top: 16px;
+}
+
+.admin-nav a.admin-nav-logout {
+  color: #fca5a5;
+}
+
+/* ---------- Navbar mobile (muncul otomatis di layar < 768px, bawa hamburger) ---------- */
+.admin-navbar-mobile {
+  background: var(--admin-dark);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.admin-navbar-mobile .navbar-brand {
+  color: #fff;
+  font-weight: 700;
+}
+
+.admin-navbar-mobile .nav-link {
+  color: #cbd5e1 !important;
+  padding: 10px 4px;
+}
+
+.admin-navbar-mobile .nav-link:hover {
+  color: #fff !important;
+}
+
+.admin-navbar-mobile .nav-link.active {
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Ikon hamburger versi terang, biar kelihatan di background gelap */
+.admin-navbar-mobile .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.35);
+  padding: 4px 8px;
+}
+
+.admin-navbar-mobile .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.admin-navbar-mobile .navbar-collapse {
+  margin-top: 10px;
+  border-top: 1px solid var(--admin-border);
+  padding-top: 6px;
+}
+
+/* ---------- Konten utama ---------- */
+.admin-main {
+  flex: 1;
+  padding: 28px 32px;
+  min-width: 0; /* penting biar konten gak overflow di flexbox */
+}
+
+.admin-page-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+/* ---------- Card statistik ---------- */
+.stat-card-admin {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  height: 100%;
+}
+.stat-card-admin h6 {
+  color: #6c757d;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.stat-card-admin .val {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+/* ---------- Panel / kartu putih umum ---------- */
+.admin-panel {
+  background: #fff;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- Badge role ---------- */
+.badge-role-user { background: #64748b; }
+.badge-role-admin { background: #6366f1; }
+.badge-role-superadmin { background: #dc2626; }
+
+table th, table td { vertical-align: middle; }
+
+/* ============================================================
+   RESPONSIVE (mobile, < 768px)
+   ============================================================ */
+@media (max-width: 767.98px) {
+  .admin-wrapper {
+    flex-direction: column;
+  }
+
+  .admin-main {
+    padding: 18px 14px 60px;
+  }
+
+  .admin-page-title {
+    font-size: 1.15rem;
+  }
+
+  .stat-card-admin {
+    padding: 14px 16px;
+  }
+
+  .stat-card-admin .val {
+    font-size: 1.3rem;
+  }
+
+  /* ---- Tabel Data User & tabel transaksi -> jadi kartu ---- */
+  table.table-mobile-card thead {
+    display: none;
+  }
+
+  table.table-mobile-card,
+  table.table-mobile-card tbody,
+  table.table-mobile-card tr,
+  table.table-mobile-card td {
+    display: block;
+    width: 100%;
+  }
+
+  table.table-mobile-card tr {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+  }
+
+  table.table-mobile-card td {
+    border: none;
+    padding: 6px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  /* label otomatis dari atribut data-label di tiap <td> */
+  table.table-mobile-card td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+    flex-shrink: 0;
+    text-align: left;
+  }
+
+  table.table-mobile-card td[data-label="Aksi"] {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  /* ---- Ringkasan transaksi user (3 kartu kecil) ---- */
+  #ringkasanUser .val {
+    font-size: 1.05rem;
+  }
+
+  /* ---- Select pilih user full width di mobile ---- */
+  #pilihUser {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 399.98px) {
+  .stat-card-admin .val {
+    font-size: 1.15rem;
+  }
+  .admin-page-title {
+    font-size: 1.05rem;
+  }
+}

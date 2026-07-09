@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data User - Panel Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/admin.css" />
+  </head>
+  <body>
+    <div class="admin-wrapper">
+      <!-- ===== Navbar mobile ===== -->
+      <nav class="navbar navbar-expand-md admin-navbar-mobile d-md-none px-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/admin/dashboard.html">🛠️ Panel Admin</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavMobile" aria-controls="adminNavMobile" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="adminNavMobile">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" data-nav="dashboard" href="/admin/dashboard.html">Dashboard Admin</a></li>
+              <li class="nav-item"><a class="nav-link" data-nav="data-user" href="/admin/data-user.html">Data User</a></li>
+              <li class="nav-item"><a class="nav-link" data-nav="transaksi-user" href="/admin/transaksi-user.html">Catatan Transaksi User</a></li>
+              <li class="nav-item"><a class="nav-link text-danger" href="#" id="logoutM">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- ===== Sidebar desktop ===== -->
+      <aside class="admin-sidebar d-none d-md-flex">
+        <div class="admin-brand">🛠️ Panel Admin</div>
+        <div class="admin-user-info" data-admin-nama>Memuat...</div>
+        <nav class="admin-nav">
+          <a data-nav="dashboard" href="/admin/dashboard.html">📊 Dashboard Admin</a>
+          <a data-nav="data-user" href="/admin/data-user.html">👥 Data User</a>
+          <a data-nav="transaksi-user" href="/admin/transaksi-user.html">📒 Catatan Transaksi User</a>
+          <a class="admin-nav-logout" href="#" id="logoutD">🚪 Logout</a>
+        </nav>
+      </aside>
+
+      <!-- ===== Konten ===== -->
+      <main class="admin-main">
+        <div class="admin-page-title">Data User</div>
+
+        <div class="admin-panel">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle table-mobile-card">
+              <thead>
+                <tr>
+                  <th>UUID</th>
+                  <th>Nama</th>
+                  <th>Email</th>
+                  <th>Terdaftar</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tabelUserBody">
+                <tr><td colspan="5" class="text-center py-3 text-muted">Memuat data...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted small mb-0">
+            Hanya <strong>super admin</strong> yang bisa menghapus akun user. Super admin tidak bisa
+            menghapus akun sendiri atau akun super admin lain.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/assets/js/supabase-init.js"></script>
+    <script src="/assets/js/admin-guard.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/admin-common.js"></script>
+    <script src="/assets/js/admin-data-user.js"></script>
+  </body>
+</html>

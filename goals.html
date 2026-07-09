@@ -17,13 +17,12 @@
         <div class="card-container-tunggal">
           <div class="card-aktivitas-lebar">
             <div class="d-flex justify-content-evenly align-items-center mb-3 border-bottom pb-3">
-              <a class="btn btn-primary text-start btn-sm me-1" href="dashboard.html">Kembali</a>
+              <a class="btn btn-primary text-start btn-sm me-1" href="/dashboard">Kembali</a>
               <div class="card-header-title-custom">List Target Kamu</div>
               <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#modalGoal">+ Tambah Target</button>
             </div>
 
             <div id="listGoals" class="list-wrapper">
-              <!-- spiner -->
               <div class="loader-container">
                 <div class="loader"></div>
                 <div class="loader-text">Memuat......</div>
@@ -59,7 +58,6 @@
       </div>
     </div>
 
-    <!-- modal untuk nambah tabungan  -->
     <div class="modal fade" id="modalIsiTabungan" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <form id="formIsiTabungan" class="modal-content">
@@ -80,6 +78,28 @@
         </form>
       </div>
     </div>
+
+    <div class="modal fade" id="modalTarikTabungan" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <form id="formTarikTabungan" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tarik Dana Target</h5>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="tarik_goal_id" />
+            <div class="mb-3">
+              <label>Nominal Penarikan (Rp)</label>
+              <input type="number" id="jumlah_tarik" class="form-control" required min="1" placeholder="Contoh: 50000" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-warning text-white">Tarik Dana</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase-init.js"></script>
