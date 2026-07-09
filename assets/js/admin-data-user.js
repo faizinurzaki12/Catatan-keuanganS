@@ -75,40 +75,28 @@ async function initDataUser() {
 
 /** Fungsi Hapus Akun Langsung via Database */
 /** Fungsi Hapus Akun Melalui Supabase Auth Admin API */
+/** Fungsi Hapus Akun Menggunakan RPC Supabase Aman */
 async function hapusAkunSimpel(userId, email) {
   if (!confirm(`Yakin ingin menghapus akun "${email}" secara permanen dari sistem?`)) {
     return;
   }
 
   try {
-    // 1. Ambil Service Role Key dari tempat aman atau inisialisasi admin client
-    // CATATAN: Untuk menghapus Auth User dari frontend, kita harus memanggil Admin API.
-    // Jika proyekmu sudah menginisialisasi admin secara global, gunakan itu.
-    // Di bawah ini adalah cara memanggil API Admin Supabase secara langsung:
-    
-    const { data, error } = await supabaseClient.auth.admin.deleteUser(userId);
+    // Memanggil fungsi Postgres RPC yang kita buat di Supabase tadi
+    const { data, error } = await supabaseClient.rpc('hapus_user_oleh_admin', {
+      user_id_target: userId
+    });
 
-    if (error) {
-      // Jika auth.admin belum dikonfigurasi di client-mu, kita coba fallback menghapus profilnya
-      console.warn("Gagal via Auth Admin API, mencoba menghapus baris tabel profil...", error.message);
-      
-      const { error: profileErr } = await supabaseClient
-        .from("profiles")
-        .delete()
-        .eq("id", userId);
-        
-      if (profileErr) throw profileErr;
-    }
+    if (error) throw error;
 
-    alert(`Akun "${email}" berhasil dihapus secara permanen!`);
+    alert(`Akun "${email}" berhasil dihapus secara permanen dari database!`);
     
-    // 2. Refresh tabel data user
+    // Refresh isi tabel agar data yang terhapus langsung hilang dari layar
     initDataUser(); 
   } catch (error) {
     alert("Gagal menghapus akun: " + error.message);
-    console.error("Error detail:", error);
+    console.error("Detail Error:", error);
   }
 }
-
 // Jalankan fungsi begitu halaman selesai dimuat
 document.addEventListener("DOMContentLoaded", initDataUser);
