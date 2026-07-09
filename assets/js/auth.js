@@ -19,7 +19,7 @@
 // ---------- LOGOUT (dipakai di halaman yang sudah login) ----------
 async function logout() {
   await supabaseClient.auth.signOut();
-  window.location.href = "/index.html";
+  window.location.href = "/";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       errBox.classList.add("d-none");
       btn.disabled = true;
-      btn.innerText = "Memproses...";
+      btn.innerText = "Tunggu bentar...";
 
       const { data, error } = await supabaseClient.auth.signInWithPassword({
         email,
@@ -76,9 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.innerText = "Masuk";
 
       if (profile && (profile.role === "admin" || profile.role === "superadmin")) {
-        window.location.href = "/admin/dashboard.html";
+        window.location.href = "/admin/dashboard";
       } else {
-        window.location.href = "/dashboard.html";
+        window.location.href = "/dashboard";
       }
     });
   }
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      window.location.href = "/dashboard.html";
+      window.location.href = "/register";
     });
   }
 });

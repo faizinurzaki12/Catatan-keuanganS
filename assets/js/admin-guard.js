@@ -14,7 +14,7 @@
 
   if (authError || !user) {
     console.warn("[admin-guard] Belum login, redirect ke login.html", authError);
-    window.location.href = "/index.html";
+    window.location.href = "/";
     return;
   }
 
@@ -32,6 +32,6 @@
 
   if (profError || !profile || (profile.role !== "admin" && profile.role !== "superadmin")) {
     console.warn("[admin-guard] Role tidak memenuhi syarat:", profile);
-    window.location.href = "/dashboard.html";
+    window.location.href = "/dashboard";
   }
 })();
