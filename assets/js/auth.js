@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       btn.disabled = true;
-      btn.innerText = "Memproses...";
+      btn.innerText = "Tunggu Bentar Yaaa....";
 
       const { data, error } = await supabaseClient.auth.signUp({
         email,

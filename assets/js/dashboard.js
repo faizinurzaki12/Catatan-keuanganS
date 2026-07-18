@@ -8,19 +8,18 @@
 // 1. HELPER FUNCTIONS (Dideklarasikan Sekali)
 // ==========================================
 const fmt = (angka) => {
-  return "Rp " + new Intl.NumberFormat("id-ID", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(angka);
+  return (
+    "Rp " +
+    new Intl.NumberFormat("id-ID", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(angka)
+  );
 };
 
 function escapeHtml(str) {
   if (str == null) return "";
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 function getRentangBulanIni() {
@@ -34,7 +33,6 @@ function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.innerText = text;
 }
-
 
 // ==========================================
 // 2. FUNGSI AMBIL & HITUNG DATA DASHBOARD
@@ -50,7 +48,10 @@ async function hitungDataDashboard() {
   }
 
   try {
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseClient.auth.getUser();
 
     if (authError || !user) {
       window.location.href = "/";
@@ -64,38 +65,24 @@ async function hitungDataDashboard() {
     const { awal, akhir, sekarang } = getRentangBulanIni();
 
     // Ambil Semua Transaksi (All-time untuk Saldo Utama)
-    const { data: semuaTransaksi, error: errSemua } = await supabaseClient
-      .from("transaksi")
-      .select("tipe, jumlah, deskripsi")
-      .eq("user_id", user.id);
+    const { data: semuaTransaksi, error: errSemua } = await supabaseClient.from("transaksi").select("tipe, jumlah, deskripsi").eq("user_id", user.id);
 
     if (errSemua) console.error("Gagal ambil semua transaksi:", errSemua.message);
 
     // Ambil Transaksi Bulan Ini
-    const { data: transaksiBulanIni, error: errBulan } = await supabaseClient
-      .from("transaksi")
-      .select("*")
-      .eq("user_id", user.id)
-      .gte("created_at", awal)
-      .lt("created_at", akhir)
-      .order("created_at", { ascending: false });
+    const { data: transaksiBulanIni, error: errBulan } = await supabaseClient.from("transaksi").select("*").eq("user_id", user.id).gte("created_at", awal).lt("created_at", akhir).order("created_at", { ascending: false });
 
     if (errBulan) console.error("Gagal ambil transaksi bulan ini:", errBulan.message);
 
     // Ambil Goals Singkat (Maksimal 3 untuk Widget Beranda)
-    const { data: listGoals, error: errGoals } = await supabaseClient
-      .from("goals")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(3);
+    const { data: listGoals, error: errGoals } = await supabaseClient.from("goals").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(3);
 
     if (errGoals) console.error("Gagal ambil goals:", errGoals.message);
 
     // --- LOGIKA SALDO UTAMA (ALL-TIME) ---
     let totalMasukSelamanya = 0;
     let totalKeluarSelamanya = 0;
-    
+
     (semuaTransaksi || []).forEach((i) => {
       const jumlah = parseInt(i.jumlah) || 0;
       if (i.tipe === "pemasukan") totalMasukSelamanya += jumlah;
@@ -113,11 +100,9 @@ async function hitungDataDashboard() {
       transaksiBulanIni.forEach((i) => {
         const jumlah = parseInt(i.jumlah) || 0;
         const deskripsiUlc = (i.deskripsi || "").toLowerCase();
-        
+
         // Cek apakah deskripsi mengandung unsur pemindahan dana goals
-        const isTransaksiGoals = deskripsiUlc.includes("goals") || 
-                                 deskripsiUlc.includes("tabungan") || 
-                                 deskripsiUlc.includes("tarik dana");
+        const isTransaksiGoals = deskripsiUlc.includes("goals") || deskripsiUlc.includes("tabungan") || deskripsiUlc.includes("tarik dana");
 
         if (!isTransaksiGoals) {
           if (i.tipe === "pemasukan") {
@@ -144,7 +129,7 @@ async function hitungDataDashboard() {
     if (jumlahTransaksiTampil === 0) {
       htmlT = `<div class="text-center nama py-3">Belum ada transaksi di bulan ini.</div>`;
     }
-    
+
     const bulanSaldo = Math.max(bulanMasuk - bulanKeluar, 0);
 
     // --- RENDER DATA DASHBOARD ---
@@ -169,27 +154,26 @@ async function hitungDataDashboard() {
       }
       containerGoals.innerHTML = htmlG;
     }
-
   } catch (err) {
     console.error("Gagal memuat dashboard:", err);
   }
 }
 
-
 // ==========================================
 // 3. FUNGSI ACTION (TAMBAH TRANSAKSI RIIL)
 // ==========================================
 async function tambahTransaksi(tipe, jumlah, deskripsi) {
-  const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabaseClient.auth.getUser();
 
   if (authError || !user) {
-    window.location.href = "/auth.html";
+    window.location.href = "/";
     return null;
   }
 
-  const { data, error } = await supabaseClient.from("transaksi").insert([
-    { user_id: user.id, tipe, jumlah, deskripsi },
-  ]);
+  const { data, error } = await supabaseClient.from("transaksi").insert([{ user_id: user.id, tipe, jumlah, deskripsi }]);
 
   if (error) {
     console.error("Gagal menambah transaksi:", error.message);
@@ -201,7 +185,6 @@ async function tambahTransaksi(tipe, jumlah, deskripsi) {
   return data;
 }
 
-
 // ==========================================
 // 4. MANAGEMENT TARGET GOALS ( HALAMAN GOALS )
 // ==========================================
@@ -209,17 +192,16 @@ async function muatGoals() {
   const listContainer = document.getElementById("listGoals");
   if (!listContainer) return;
 
-  const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabaseClient.auth.getUser();
   if (authError || !user) {
     window.location.href = "/";
     return;
   }
 
-  const { data, error } = await supabaseClient
-    .from("goals")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+  const { data, error } = await supabaseClient.from("goals").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
 
   if (error) {
     listContainer.innerHTML = `<p class="text-danger">Gagal memuat data: ${error.message}</p>`;
@@ -233,9 +215,8 @@ async function muatGoals() {
       const targetJumlah = g.target_jumlah || g.target_nominal || 1;
       const persen = Math.min(Math.round((terkumpulClean / targetJumlah) * 100), 100);
 
-      const tombolHapus = terkumpulClean > 0
-        ? `<button class="btn btn-secondary btn-sm" disabled title="Tidak bisa menghapus karena sudah ada tabungan">Hapus</button>`
-        : `<button class="btn btn-danger btn-sm" onclick="hapusGoal('${g.id}')">Hapus</button>`;
+      const tombolHapus =
+        terkumpulClean > 0 ? `<button class="btn btn-secondary btn-sm" disabled title="Tidak bisa menghapus karena sudah ada tabungan">Hapus</button>` : `<button class="btn btn-danger btn-sm" onclick="hapusGoal('${g.id}')">Hapus</button>`;
 
       html += `
         <div class="goal-card mb-3 p-3 border rounded shadow-sm">
@@ -248,7 +229,7 @@ async function muatGoals() {
             </div>
             <div class="d-flex justify-content-between">
               <small class="text-muted">${fmt(terkumpulClean)} / ${fmt(targetJumlah)}</small>
-              ${g.deadline ? `<small class="text-danger">Tenggat: ${g.deadline}</small>` : ''}
+              ${g.deadline ? `<small class="text-danger">Tenggat: ${g.deadline}</small>` : ""}
             </div>
             <div class="d-flex gap-2 mt-3">
                 <button class="btn btn-success btn-sm" onclick="bukaModalTabungan('${g.id}')">Isi Tabungan</button>
@@ -269,8 +250,11 @@ if (formGoal) {
   formGoal.onsubmit = async (e) => {
     e.preventDefault();
     const submitBtn = e.target.querySelector('button[type="submit"]');
-    
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseClient.auth.getUser();
     if (authError || !user) {
       alert("Sesi Anda habis. Silakan login kembali.");
       return;
@@ -283,7 +267,7 @@ if (formGoal) {
       {
         user_id: user.id,
         nama_goal: e.target.nama_goal.value,
-        target_jumlah: parseInt(e.target.target_jumlah.value), 
+        target_jumlah: parseInt(e.target.target_jumlah.value),
         terkumpul: 0,
         deadline: e.target.deadline.value,
       },
@@ -323,7 +307,9 @@ if (formIsiTabungan) {
     const goalId = document.getElementById("isi_goal_id").value;
     const nominal = parseInt(e.target.jumlah_tabungan.value);
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser();
 
     submitBtn.disabled = true;
     const originalText = submitBtn.innerText;
@@ -368,7 +354,9 @@ if (formTarikTabungan) {
     const goalId = document.getElementById("tarik_goal_id").value;
     const nominal = parseInt(e.target.jumlah_tarik.value);
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser();
 
     submitBtn.disabled = true;
     const originalText = submitBtn.innerText;
@@ -386,7 +374,7 @@ if (formTarikTabungan) {
     if (error) {
       alert("Terjadi kesalahan sistem: " + error.message);
     } else if (data && data.success === false) {
-      alert(data.message); 
+      alert(data.message);
     } else {
       alert("Berhasil! " + fmt(nominal) + " telah ditarik dari target.");
       const modalEl = document.getElementById("modalTarikTabungan");
@@ -411,7 +399,12 @@ window.hapusGoal = async function (id) {
   }
 };
 
-
+document.getElementById("linkTabungan").addEventListener("click", function (e) {
+  e.preventDefault(); // batalkan navigasi ke goals.html
+  const modalEl = document.getElementById("modalComingSoon");
+  const modal = new bootstrap.Modal(modalEl);
+  modal.show();
+});
 // ==========================================
 // 6. INITIALIZER (RUN ON LOAD)
 // ==========================================
