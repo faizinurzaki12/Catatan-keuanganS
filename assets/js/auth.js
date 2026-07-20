@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      window.location.href = "/register";
+      window.location.href = "/daftar";
     });
   }
 });
