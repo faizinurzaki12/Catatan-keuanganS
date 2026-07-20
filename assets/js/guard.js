@@ -12,6 +12,6 @@
   } = await supabaseClient.auth.getSession();
 
   if (error || !session) {
-    window.location.href = "/index.html";
+    window.location.href = "/";
   }
 })();
